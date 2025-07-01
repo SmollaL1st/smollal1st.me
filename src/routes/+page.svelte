@@ -30,23 +30,20 @@
         background-color: rgb(var(--m3-scheme-background));
         color: rgb(var(--m3-scheme-on-background));
         transition: background-color 0.3s ease;
-        overflow-x: hidden; /* Prevent horizontal scroll */
+        overflow-x: hidden;
     }
 
     :global(html) {
         height: 100%;
         scroll-behavior: smooth;
-        overflow-x: hidden; /* Prevent horizontal scroll */
+        overflow-x: hidden;
     }
 
     :root {
         --font-one: "Space Grotesk", sans-serif;
         --font-two: "JetBrains Mono", monospace;
         --content-max-width: 1200px;
-        --mobile-breakpoint: 768px;
-        --tablet-breakpoint: 1024px;
         --grid-gap: 3rem;
-        --mobile-gap: 2rem;
         --transition-speed: 0.4s;
         --transition-easing: cubic-bezier(0.4, 0, 0.2, 1);
     }
@@ -88,7 +85,7 @@
         flex-direction: column;
         gap: 2rem;
         transition: all var(--transition-speed) var(--transition-easing);
-        min-width: 0; /* Allow content to shrink */
+        min-width: 0;
     }
 
     .social-section {
@@ -101,25 +98,10 @@
         overflow: hidden;
     }
 
-    /* Tablet layout */
-    @media (max-width: 1024px) {
-        :root {
-            --grid-gap: 2.5rem;
-        }
-        
-        .content-grid {
-            max-width: 90%;
-        }
-
-        .social-section {
-            justify-content: center;
-        }
-    }
-
-    /* Mobile layout */
+    /* Phone styles */
     @media (max-width: 768px) {
         :root {
-            --grid-gap: var(--mobile-gap);
+            --grid-gap: 2rem;
         }
 
         .page-container {
@@ -128,7 +110,7 @@
 
         .content-grid {
             grid-template-columns: 1fr;
-            grid-template-areas: 
+            grid-template-areas:
                 "avatar"
                 "content";
             text-align: center;
@@ -144,37 +126,6 @@
         .social-section {
             justify-content: center;
             width: 100%;
-            max-width: 100%;
-        }
-    }
-
-    /* Small mobile adjustments */
-    @media (max-width: 480px) {
-        .page-container {
-            padding: 1rem 0.5rem;
-        }
-
-        .content-grid {
-            max-width: min(98%, 400px);
-        }
-
-        .content-section {
-            gap: 1.25rem;
-        }
-
-        .social-section {
-            width: 100%;
-            max-width: 100%;
-        }
-    }
-
-    /* Very small screens */
-    @media (max-width: 320px) {
-        .page-container {
-            padding: 1rem 0.25rem;
-        }
-
-        .content-grid {
             max-width: 100%;
         }
     }

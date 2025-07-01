@@ -50,27 +50,11 @@
         transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
     }
 
-    /* Tablet styles */
-    @media (max-width: 1024px) {
-        .avatar-wrapper {
-            width: clamp(200px, 22vw, 250px);
-            height: clamp(200px, 22vw, 250px);
-        }
-    }
-
-    /* Mobile styles */
+    /* Phone styles */
     @media (max-width: 768px) {
         .avatar-wrapper {
-            width: clamp(150px, 30vw, 200px);
-            height: clamp(150px, 30vw, 200px);
-        }
-    }
-
-    /* Small mobile adjustments */
-    @media (max-width: 480px) {
-        .avatar-wrapper {
-            width: clamp(120px, 25vw, 200px);
-            height: clamp(120px, 25vw, 200px);
+            width: clamp(140px, 30vw, 250px);
+            height: clamp(140px, 30vw, 250px);
         }
     }
 

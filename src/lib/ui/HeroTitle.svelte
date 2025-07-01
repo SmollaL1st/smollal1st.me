@@ -1,8 +1,11 @@
 <script>
-	let username = 'Smolla L1st';
+	let username = "Smolla L1st";
+	let pronouns = "he/him";
+	let greeting = "hey, i'm";
+	let description = "Just a programmer.";
 	let mounted = false;
 
-	import { onMount } from 'svelte';
+	import { onMount } from "svelte";
 
 	onMount(() => {
 		mounted = true;
@@ -13,24 +16,24 @@
 	<!-- Desktop Title -->
 	<div class="hero-title-desktop">
 		<h1 class="title-text">
-			<span class="greeting">hey, i'm</span>
+			<span class="greeting">{greeting}</span>
 			<strong class="name">{username}</strong>
 		</h1>
+		<p class="pronouns">{pronouns}</p>
 	</div>
 
 	<!-- Mobile Title -->
 	<div class="hero-title-mobile">
 		<h1 class="mobile-title">
-			<span class="greeting">hey, i'm</span>
+			<span class="greeting">{greeting}</span>
 			<strong class="name">{username}</strong>
 		</h1>
+		<p class="pronouns">{pronouns}</p>
 	</div>
 
 	<!-- Description -->
 	<div class="description">
-		<p class="introduction">
-			Just a programmer.
-		</p>
+		<p class="introduction">{description}</p>
 	</div>
 </div>
 
@@ -75,8 +78,18 @@
 	}
 
 	.mobile-title {
-		font-size: clamp(1.5rem, 6vw, 3rem);
+		font-size: clamp(1.5rem, 8vw, 3rem);
 		text-align: center;
+	}
+
+	.pronouns {
+		font-family: var(--font-one, system-ui, sans-serif);
+		color: rgb(var(--m3-scheme-on-surface-variant));
+		font-size: clamp(0.9rem, 2vw, 1.1rem);
+		margin: 0;
+		margin-top: 0.25rem;
+		font-weight: 400;
+		opacity: 0.8;
 	}
 
 	.greeting {
@@ -119,7 +132,8 @@
 	}
 
 	@keyframes gradient-shift {
-		0%, 100% {
+		0%,
+		100% {
 			background-position: 0% 50%;
 		}
 		50% {
@@ -127,14 +141,7 @@
 		}
 	}
 
-	/* Tablet styles */
-	@media (max-width: 1024px) {
-		.title-text {
-			font-size: clamp(2rem, 4.5vw, 3.5rem);
-		}
-	}
-
-	/* Mobile styles */
+	/* Phone styles */
 	@media (max-width: 768px) {
 		.hero-section {
 			text-align: center;
@@ -153,17 +160,6 @@
 			text-align: center;
 			max-width: 90%;
 			margin: 0 auto;
-		}
-	}
-
-	/* Small mobile adjustments */
-	@media (max-width: 480px) {
-		.hero-section {
-			gap: 1.25rem;
-		}
-
-		.mobile-title {
-			font-size: clamp(1.25rem, 5vw, 2.5rem);
 		}
 	}
 
