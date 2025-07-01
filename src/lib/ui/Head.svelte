@@ -1,9 +1,8 @@
 <script lang="ts">
-    export let _title: string = "";
-    export let _description: string = "Smolla L1st";
-    export let _image: string = "";
+     const  _description: string = "Just a programmer.";
+     const  _image: string = "../avatar/a.webp";
   
-    const title = _title ? `${_title}` : "Smolla L1st";
+    const title = "Smolla L1st";
   </script>
   
   <svelte:head>

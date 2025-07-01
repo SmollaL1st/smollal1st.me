@@ -1,5 +1,6 @@
 <script>
     import { Button} from "m3-svelte"
+    import { version } from "$app/environment";
 </script>
 
 <div class="social-container">
@@ -8,6 +9,7 @@
     <Button variant="filled" square iconType="left" click={() => window.open("https://discord.com/users/651391077269372938", "_blank")}>Discord</Button>
     <Button variant="filled" square iconType="left" click={() => window.open("https://mastodon.social/@SmollaL1st", "_blank")}>Mastodon</Button>
     <Button variant="filled" square iconType="left" click={() => window.open("https://steamcommunity.com/id/smolla_l1st/", "_blank")}>Steam</Button>
+    <Button disabled variant="outlined" square>site v{version}</Button>
 </div>
 
 <style>
