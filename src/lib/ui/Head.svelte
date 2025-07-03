@@ -1,6 +1,6 @@
 <script lang="ts">
   const _description: string = "Just a programmer.";
-  const _image: string = "../avatar/a.webp";
+  const _image: string = "../avatar/a.jpg";
   const title = "Smolla L1st";
 </script>
 
