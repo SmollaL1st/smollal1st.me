@@ -1,5 +1,5 @@
 <script>
-	let username = "Smolla L1st";
+	let username = "Smo//a L1st";
 	let pronouns = "he/him";
 	let greeting = "hey, i'm";
 	let description = "Just a programmer.";

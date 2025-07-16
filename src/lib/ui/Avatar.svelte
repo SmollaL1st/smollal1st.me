@@ -1,11 +1,11 @@
 <script>
-    let username = 'Smolla L1st';
+    let username = 'Smo//a L1st';
 </script>
 
 <div class="avatar-container">
     <div class="avatar-wrapper">
         <img
-            src="../avatar/a.jpg"
+            src="../avatar/a.webp"
             class="avatar-image"
             alt="Profile picture of {username}"
             draggable="false"

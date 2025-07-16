@@ -8,7 +8,7 @@
     <Button variant="filled" square iconType="left" click={() => window.open("https://www.instagram.com/smolla_l1st/", "_blank")}>Instagram</Button>
     <Button variant="filled" square iconType="left" click={() => window.open("https://discord.com/users/651391077269372938", "_blank")}>Discord</Button>
     <Button variant="filled" square iconType="left" click={() => window.open("https://steamcommunity.com/id/smolla_l1st/", "_blank")}>Steam</Button>
-    <a rel="me" href="https://mastodon.social/@SmollaL1st"><Button variant="filled" square iconType="left">Mastodon</Button></a>
+    <Button variant="filled" square iconType="left" click={() => window.open("https://mastodon.social/@SmollaL1st", "_blank")} >Mastodon</Button>
     <Button disabled variant="filled" square>ver.{version}</Button>
 </div>
 
