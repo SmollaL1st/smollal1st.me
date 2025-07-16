@@ -5,7 +5,7 @@
 <div class="avatar-container">
     <div class="avatar-wrapper">
         <img
-            src="../avatar/a.webp"
+            src="../avatar/a_me.webp"
             class="avatar-image"
             alt="Profile picture of {username}"
             draggable="false"
