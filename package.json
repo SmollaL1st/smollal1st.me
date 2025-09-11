@@ -1,7 +1,7 @@
 {
 	"name": "smollal1st.me",
 	"private": true,
-	"version": "0.1.5.28",
+	"version": "0.1.5.29",
 	"type": "module",
 	"scripts": {
 		"dev": "vite dev",
@@ -13,9 +13,9 @@
 	},
 	"devDependencies": {
 		"@sveltejs/adapter-auto": "^6.1.0",
-		"@sveltejs/kit": "^2.37.1",
+		"@sveltejs/kit": "^2.38.1",
 		"@sveltejs/vite-plugin-svelte": "^6.2.0",
-		"svelte": "^5.38.7",
+		"svelte": "^5.38.9",
 		"svelte-check": "^4.3.1",
 		"typescript": "^5.9.2",
 		"vite": "^7.1.5"
