@@ -1,7 +1,7 @@
 {
 	"name": "smollal1st.me",
 	"private": true,
-	"version": "0.1.5.30",
+	"version": "0.1.5.31",
 	"type": "module",
 	"scripts": {
 		"dev": "vite dev",
@@ -13,14 +13,14 @@
 	},
 	"devDependencies": {
 		"@sveltejs/adapter-auto": "^6.1.0",
-		"@sveltejs/kit": "^2.39.1",
+		"@sveltejs/kit": "^2.42.1",
 		"@sveltejs/vite-plugin-svelte": "^6.2.0",
-		"svelte": "^5.38.10",
+		"svelte": "^5.39.2",
 		"svelte-check": "^4.3.1",
 		"typescript": "^5.9.2",
-		"vite": "^7.1.5"
+		"vite": "^7.1.6"
 	},
 	"dependencies": {
-		"m3-svelte": "^5.6.0"
+		"m3-svelte": "^5.7.3"
 	}
 }
