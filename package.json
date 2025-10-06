@@ -1,7 +1,7 @@
 {
 	"name": "smollal1st.me",
 	"private": true,
-	"version": "0.1.5.35",
+	"version": "0.1.5.36",
 	"type": "module",
 	"scripts": {
 		"dev": "vite dev",
@@ -12,13 +12,13 @@
 		"check:watch": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json --watch"
 	},
 	"devDependencies": {
-		"@sveltejs/adapter-auto": "^6.1.0",
-		"@sveltejs/kit": "^2.43.7",
+		"@sveltejs/adapter-auto": "^6.1.1",
+		"@sveltejs/kit": "^2.44.0",
 		"@sveltejs/vite-plugin-svelte": "^6.2.1",
-		"svelte": "^5.39.8",
+		"svelte": "^5.39.9",
 		"svelte-check": "^4.3.2",
 		"typescript": "^5.9.3",
-		"vite": "^7.1.7"
+		"vite": "^7.1.9"
 	},
 	"dependencies": {
 		"m3-svelte": "^5.9.0"
