@@ -1,8 +1,7 @@
 <script>
 	let username = "Smo//a L1st";
 	let pronouns = "he/him";
-	let greeting = "hey, i'm";
-	let description = "Just a programmer.";
+	let description = "Just a man";
 	let mounted = false;
 
 	import { onMount } from "svelte";
@@ -16,7 +15,6 @@
 	<!-- Desktop Title -->
 	<div class="hero-title-desktop">
 		<h1 class="title-text">
-			<span class="greeting">{greeting}</span>
 			<strong class="name">{username}</strong>
 		</h1>
 		<p class="pronouns">{pronouns}</p>
@@ -25,7 +23,6 @@
 	<!-- Mobile Title -->
 	<div class="hero-title-mobile">
 		<h1 class="mobile-title">
-			<span class="greeting">{greeting}</span>
 			<strong class="name">{username}</strong>
 		</h1>
 		<p class="pronouns">{pronouns}</p>
@@ -90,14 +87,6 @@
 		margin-top: 0.25rem;
 		font-weight: 400;
 		opacity: 0.8;
-	}
-
-	.greeting {
-		font-weight: 300;
-		opacity: 0.9;
-		font-size: 0.8em;
-		color: rgb(var(--m3-scheme-on-background));
-		transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
 	}
 
 	.name {
@@ -190,10 +179,6 @@
 			background-clip: unset;
 			-webkit-background-clip: unset;
 			-webkit-text-fill-color: unset;
-		}
-
-		.greeting {
-			opacity: 1;
 		}
 
 		.introduction {

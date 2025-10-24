@@ -5,8 +5,8 @@
 <div class="avatar-container">
     <div class="avatar-wrapper">
         <img
-            src="../avatar/a_me.webp"
-            class="avatar-image"
+            src="../avatar/a_me.jpg"
+            class="avatar"
             alt="Profile picture of {username}"
             draggable="false"
         />
@@ -29,7 +29,6 @@
         border-radius: 20%;
         overflow: hidden;
         box-shadow: 
-            0 4px 20px rgba(0, 0, 0, 0.1),
             0 0 0 2px rgb(var(--m3-scheme-outline-variant));
         transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
         transform: scale(1);
@@ -38,11 +37,10 @@
     .avatar-wrapper:hover {
         transform: scale(1.05);
         box-shadow: 
-            0 8px 30px rgba(0, 0, 0, 0.15),
             0 0 0 3px rgb(var(--m3-scheme-primary));
     }
 
-    .avatar-image {
+    .avatar {
         width: 100%;
         height: 100%;
         object-fit: cover;
@@ -73,13 +71,11 @@
     @media (prefers-color-scheme: dark) {
         .avatar-wrapper {
             box-shadow: 
-                0 4px 20px rgba(0, 0, 0, 0.3),
                 0 0 0 2px rgb(var(--m3-scheme-outline-variant));
         }
 
         .avatar-wrapper:hover {
             box-shadow: 
-                0 8px 30px rgba(0, 0, 0, 0.4),
                 0 0 0 3px rgb(var(--m3-scheme-primary));
         }
     }
