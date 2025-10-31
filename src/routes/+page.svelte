@@ -1,9 +1,12 @@
 <script>
   import Book from "$lib/components/Book.svelte";
+  import Head from "$lib/components/Head.svelte";
 </script>
 
+<Head />
+
 <Book
-    name="Smolla L1st"
+    name="Smo//a L1st"
     username="SmollaL1st"
     avatar_url="../avatar/a_me.jpg"
     is_verified={true}
