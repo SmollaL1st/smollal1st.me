@@ -58,7 +58,7 @@
 			<Button
 				variant="text"
 				iconType="left"
-				onclick={() => window.open('https://steamcommunity.com/id/smolla_l1st/', '_blank')}
+				onclick={() => window.open('https://steamcommunity.com/id/SmollaL1st/', '_blank')}
 			>
 				Steam
 			</Button>
