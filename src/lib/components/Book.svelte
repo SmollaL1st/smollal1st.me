@@ -17,7 +17,7 @@
 
 		<div class="cover">
 			<div class="bindingCrease"></div>
-			<Logo size={40} />
+			<Logo size={45} />
 			<div class="content">
 				<h1 class="truncate name-container">
 					{name || username}
@@ -36,7 +36,7 @@
 
 <style>
 	.container {
-		perspective: 2000px;
+		perspective: 2500px;
 		display: flex;
 		justify-content: center;
 		align-items: center;
@@ -48,7 +48,10 @@
 		height: 560px;
 		margin: 20px;
 		transform-style: preserve-3d;
-		transition: transform 0.4s ease;
+		transition:
+			transform 0.9s cubic-bezier(0.23, 1, 0.32, 1),
+			filter 0.6s ease;
+		filter: drop-shadow(0 10px 25px rgba(0, 0, 0, 0.3));
 	}
 
 	.back-cover {
@@ -58,6 +61,7 @@
 		background: rgb(var(--m3-scheme-primary-container));
 		border-radius: 0 20px 20px 0;
 		box-shadow: -5px 8px 20px rgba(0, 0, 0, 0.3);
+		transition: box-shadow 0.6s ease;
 	}
 
 	.cover {
@@ -73,17 +77,29 @@
 		box-shadow: 0px 8px 20px rgba(0, 0, 0, 0.5);
 		transform-origin: left center;
 		transform-style: preserve-3d;
-		transition: transform 0.8s cubic-bezier(0.645, 0.045, 0.355, 1);
+		transition:
+			transform 1.2s cubic-bezier(0.23, 1, 0.32, 1),
+			box-shadow 0.8s ease;
 		backface-visibility: hidden;
+		will-change: transform;
 	}
 
 	.book:hover .cover {
-		transform: rotateY(-160deg);
-		box-shadow: -10px 8px 30px rgba(0, 0, 0, 0.4);
+		transform: rotateY(-165deg) translateZ(10px);
+		box-shadow:
+			-15px 12px 40px rgba(0, 0, 0, 0.35),
+			-25px 20px 60px rgba(0, 0, 0, 0.2);
 	}
 
 	.book:hover {
-		transform: translateX(50px);
+		transform: translateX(50px) translateY(-8px) rotateY(5deg);
+		filter: drop-shadow(0 20px 40px rgba(0, 0, 0, 0.4));
+	}
+
+	.book:hover .back-cover {
+		box-shadow:
+			-8px 12px 30px rgba(0, 0, 0, 0.4),
+			-15px 20px 50px rgba(0, 0, 0, 0.2);
 	}
 
 	.bindingCrease {
@@ -93,10 +109,23 @@
 		top: 0;
 		bottom: 0;
 		width: 16px;
-		background: rgb(var(--m3-scheme-primary-container));
+		background: linear-gradient(
+			to right,
+			rgba(var(--m3-scheme-on-primary-fixed-variant)),
+			rgba(var(--m3-scheme-on-primary-fixed-variant))
+		);
 		border-radius: 3px 0 0 3px;
 		border-right: solid rgb(var(--m3-scheme-on-primary-fixed-variant)) 1px;
-		box-shadow: inset -3px 0 10px rgba(0, 0, 0, 0.2);
+		box-shadow:
+			inset -3px 0 10px rgba(0, 0, 0, 0.2),
+			inset 0 0 15px rgba(0, 0, 0, 0.1);
+		transition: box-shadow 0.8s ease;
+	}
+
+	.book:hover .bindingCrease {
+		box-shadow:
+			inset -5px 0 15px rgba(0, 0, 0, 0.3),
+			inset 0 0 20px rgba(0, 0, 0, 0.15);
 	}
 
 	.content {
@@ -135,15 +164,19 @@
 
 	@media (max-width: 768px) {
 		.book:hover .cover {
-			transform: rotateY(-140deg);
+			transform: rotateY(-145deg) translateZ(8px);
 		}
 
 		.book:hover {
-			transform: translateX(30px);
+			transform: translateX(30px) translateY(-6px) rotateY(3deg);
 		}
 	}
 
 	@media (max-width: 480px) {
+		.container {
+			perspective: 2000px;
+		}
+
 		.truncate {
 			max-width: 80vw;
 		}
@@ -162,7 +195,21 @@
 		}
 
 		.book:active .cover {
-			transform: rotateY(-160deg);
+			transform: rotateY(-165deg) translateZ(10px);
+			box-shadow:
+				-15px 12px 40px rgba(0, 0, 0, 0.35),
+				-25px 20px 60px rgba(0, 0, 0, 0.2);
+		}
+
+		.book:active {
+			transform: translateX(25px) translateY(-5px) rotateY(3deg);
+			filter: drop-shadow(0 15px 35px rgba(0, 0, 0, 0.4));
+		}
+
+		.book:active .back-cover {
+			box-shadow:
+				-8px 12px 30px rgba(0, 0, 0, 0.4),
+				-15px 20px 50px rgba(0, 0, 0, 0.2);
 		}
 	}
 </style>
