@@ -25,6 +25,6 @@
 
 <style>
 	.logo {
-		fill: rgba(var(--m3-scheme-on-primary-container));
+		fill: var(--m3c-on-primary-container);
 	}
 </style>

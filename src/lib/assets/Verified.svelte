@@ -9,9 +9,9 @@
 
 <style>
     #check {
-        fill: rgba(var(--m3-scheme-background));
+        fill: var(--m3c-background);
     }
     #main {
-        fill: rgba(var(--m3-scheme-on-primary-container));
+        fill: var(--m3c-on-primary-container);
     }
 </style>

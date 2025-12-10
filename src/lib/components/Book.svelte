@@ -58,14 +58,14 @@
 		position: absolute;
 		width: 100%;
 		height: 100%;
-		background: rgb(var(--m3-scheme-primary-container));
+		background: var(--m3c-primary-container);
 		border-radius: 0 20px 20px 0;
 		box-shadow: -5px 8px 20px rgba(0, 0, 0, 0.3);
 		transition: box-shadow 0.6s ease;
 	}
 
 	.cover {
-		background: rgb(var(--m3-scheme-primary-container));
+		background: var(--m3c-primary-container);
 		width: 100%;
 		height: 100%;
 		position: absolute;
@@ -111,11 +111,11 @@
 		width: 16px;
 		background: linear-gradient(
 			to right,
-			rgba(var(--m3-scheme-on-primary-fixed-variant)),
-			rgba(var(--m3-scheme-on-primary-fixed-variant))
+			var(--m3c-on-primary-fixed-variant),
+			var(--m3c-on-primary-fixed-variant)
 		);
 		border-radius: 3px 0 0 3px;
-		border-right: solid rgb(var(--m3-scheme-on-primary-fixed-variant)) 1px;
+		border-right: solid rgb(var(--m3c-on-primary-fixed-variant)) 1px;
 		box-shadow:
 			inset -3px 0 10px rgba(0, 0, 0, 0.2),
 			inset 0 0 15px rgba(0, 0, 0, 0.1);
@@ -133,18 +133,18 @@
 	}
 
 	.username {
-		color: rgb(var(--m3-scheme-on-primary-container));
+		color: rgb(var(--m3c-on-primary-container));
 	}
 
 	.name-container {
 		font-size: 50px;
-		color: rgb(var(--m3-scheme-on-primary-container));
+		color: var(--m3c-on-primary-container);
 	}
 
 	.name-container,
 	.username-verified-container {
 		margin: 40px 0;
-		color: rgb(var(--m3-scheme-on-primary-container));
+		color: var(--m3c-on-primary-container);
 	}
 
 	.username-verified-container {

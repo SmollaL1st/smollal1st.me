@@ -2,7 +2,7 @@ import { sveltekit } from '@sveltejs/kit/vite';
 import { defineConfig } from 'vite';
 
 export default defineConfig({
-	plugins: [sveltekit()],
+	  plugins: [sveltekit()],
 	server: {
 		host: 'localhost',
 		port: 1000

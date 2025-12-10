@@ -39,8 +39,8 @@
 		--pattern-url: url('');
 		margin: 0;
 		font-family: 'Roboto', sans-serif;
-		background-color: rgb(var(--m3-scheme-background));
-		color: rgb(var(--m3-scheme-on-background));
+		background-color: var(--m3c-background);
+		color: var(--m3c-on-background);
 		justify-content: center;
 		align-items: center;
 		height: 100vh;

@@ -1,7 +1,7 @@
 {
 	"name": "smollal1st.me",
 	"private": true,
-	"version": "0.2.2.2",
+	"version": "0.2.2.3",
 	"type": "module",
 	"scripts": {
 		"dev": "vite dev",
@@ -13,7 +13,6 @@
 		"format": "prettier --write .",
 		"lint": "prettier --check . && eslint ."
 	},
-
 	"devDependencies": {
 		"@eslint/compat": "^2.0.0",
 		"@eslint/js": "^9.39.1",

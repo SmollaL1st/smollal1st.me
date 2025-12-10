@@ -105,14 +105,14 @@
 	.title {
 		font-size: 42px;
 		font-weight: 600;
-		color: rgb(var(--m3-scheme-on-surface));
+		color: var(--m3c-on-surface);
 		margin: 0 0 8px 0;
 		letter-spacing: 2px;
 	}
 
 	.subtitle {
 		font-size: 14px;
-		color: rgb(var(--m3-scheme-on-surface-variant));
+		color: var(--m3c-on-surface-variant);
 		font-style: italic;
 		letter-spacing: 1px;
 	}
@@ -130,13 +130,13 @@
 		align-items: center;
 		gap: 16px;
 		padding: 8px 0;
-		border-bottom: 1px dotted rgba(var(--m3-scheme-outline), 0.3);
+		border-bottom: 1px dotted var(--m3c-outline), 0.3;
 		transition: all 0.3s ease;
 	}
 
 	.link-item:hover {
 		padding-left: 8px;
-		border-bottom-color: rgb(var(--m3-scheme-primary));
+		border-bottom-color: var(--m3c-primary);
 	}
 
 	.link-item:last-child {
@@ -147,7 +147,7 @@
 		min-width: 32px;
 		display: flex;
 		justify-content: center;
-		color: rgb(var(--m3-scheme-primary));
+		color: var(--m3c-primary);
 	}
 
 	.link-item :global(button) {
@@ -161,14 +161,14 @@
 	.colophon {
 		text-align: center;
 		padding-top: 20px;
-		color: rgb(var(--m3-scheme-on-surface-variant));
+		color: var(--m3c-on-surface-variant);
 		font-size: 12px;
 	}
 
 	.ornament-line {
 		width: 60px;
 		height: 1px;
-		background: rgb(var(--m3-scheme-outline));
+		background: var(--m3c-outline);
 		margin: 0 auto 12px;
 	}
 
