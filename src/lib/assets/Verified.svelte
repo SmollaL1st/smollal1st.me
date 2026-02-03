@@ -1,5 +1,9 @@
-<script>
-    export let size = 16;
+<script lang="ts">
+	interface Props {
+		size?: number;
+	}
+
+	let { size = 16 }: Props = $props();
 </script>
 
 <svg fill="none" height={size} width={size} viewBox="0 0 26 26" xmlns="http://www.w3.org/2000/svg">
@@ -9,9 +13,9 @@
 
 <style>
     #check {
-        fill: var(--m3c-background);
+        fill: #1e1e1e;
     }
     #main {
-        fill: var(--m3c-on-primary-container);
+        fill: #ffffff;
     }
 </style>
