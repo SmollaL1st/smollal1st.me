@@ -126,8 +126,8 @@
 		position: absolute;
 		left: 50%;
 		top: 50%;
-		width: 40px;
-		height: 40px;
+		width: 55px;
+		height: 55px;
 		transform: 
 			translate(-50%, -50%)
 			translate(var(--x), var(--y))
@@ -165,8 +165,8 @@
 		}
 
 		.logo-item {
-			width: 30px;
-			height: 30px;
+			width: 50px;
+			height: 50px;
 		}
 
 		/* Don't collapse on mobile (no hover) */
