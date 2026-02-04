@@ -19,10 +19,11 @@
 
 	<!-- Username - appears on hover (desktop) or always visible (mobile) -->
 	<div class="username-row" class:visible={isHovered}>
-		<span class="username">@{username}</span>
-		{#if isVerified}
+		<span class="username">@{username}
+			{#if isVerified}
 			<Verified size={15} />
 		{/if}
+		</span>
 	</div>
 </div>
 
@@ -45,8 +46,8 @@
 	}
 
 	.avatar {
-		width: 150px;
-		height: 150px;
+		width: 160px;
+		height: 160px;
 		border-radius: 32px;
 		object-fit: cover;
 		display: block;
@@ -75,14 +76,17 @@
 		font-weight: 500;
 		color: rgba(255, 255, 255, 0.95);
 		letter-spacing: 0.01em;
+		background-color: #222222;
+		border-radius: 12px;
+		padding: 6px 12px;
 	}
 
 	/* Mobile styles */
 	@media (max-width: 768px) {
 		.avatar {
-			width: 280px;
-			height: 280px;
-			border-radius: 48px;
+			width: 180px;
+			height: 180px;
+			border-radius: 38px;
 		}
 
 		.username-row {

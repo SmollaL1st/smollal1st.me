@@ -184,7 +184,7 @@
 		display: none;
 		width: 100%;
 		max-width: 500px;
-		padding: 0 20px;
+		padding: 0 5px;
 		z-index: 10;
 	}
 

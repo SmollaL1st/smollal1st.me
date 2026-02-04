@@ -158,10 +158,25 @@
 		transition-delay: calc(var(--delay) * 0.5);
 	}
 
-	/* Hide on mobile */
 	@media (max-width: 768px) {
 		.pattern-container {
-			display: none;
+			top: -230px;
+			transform: translateX(-50%);
+		}
+
+		.logo-item {
+			width: 30px;
+			height: 30px;
+		}
+
+		/* Don't collapse on mobile (no hover) */
+		.pattern-container.collapsed .logo-item {
+			transform: 
+				translate(-50%, -50%)
+				translate(var(--x), var(--y))
+				rotate(var(--rotation))
+				scale(var(--scale));
+			opacity: var(--opacity);
 		}
 	}
 </style>
