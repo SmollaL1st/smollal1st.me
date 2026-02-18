@@ -198,9 +198,7 @@
 	.social-btn.list-item {
 		width: 100%;
 		padding: 20px 28px; 
-		
 		background-color: #222222; 
-		
 		border: none;
 		display: flex;
 		align-items: center;
