@@ -53,7 +53,7 @@
 			>
 				{@html link.icon}
 				{#if hoveredInfo}
-					<div class="version-tooltip">Ver.{ver}</div>
+					<div class="version-tooltip">ver.{ver}</div>
 				{/if}
 			</div>
 		{:else}
@@ -82,7 +82,7 @@
 
 			{#if link.isInfo}
 				<div class="social-btn list-item {shapeClass}">
-					<span class="link-name">Ver.{ver}</span>
+					<span class="link-name">ver.{ver}</span>
 				</div>
 			{:else}
 				<a
@@ -191,7 +191,7 @@
 	.list-group {
 		display: flex;
 		flex-direction: column;
-		gap: 4px; 
+		gap: 3px; 
 		width: 100%;
 	}
 
