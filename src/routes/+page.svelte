@@ -5,7 +5,7 @@
 	import LogoPattern from '$lib/components/LogoPattern.svelte';
 
 	const username = 'SmollaL1st';
-	const avatarUrl = '/avatar/a_me.jpg';
+	const avatarUrl = '/avatar/a_me.png';
 	const isVerified = true;
 
 	let isHovered = $state(false);
