@@ -20,10 +20,10 @@
 	// Desktop: Calculate position for circular menu
 	function getCircularPosition(index: number, total: number) {
 		const angle = (index * (360 / total) - 90) * (Math.PI / 180);
-		const radius = 170;
+		const radius = 230;
 		const x = Math.cos(angle) * radius;
 		const y = Math.sin(angle) * radius;
-		return { x, y, angle: index * (360 / total) };
+		return { x, y };
 	}
 
 	// Mobile: Helper to determine the shape class based on index
@@ -33,10 +33,15 @@
 		if (index === total - 1) return 'shape-bottom';
 		return 'shape-middle';
 	}
+
+	function getIconPath(icon: string): string {
+		const pathMatch = icon.match(/d="([^"]+)"/);
+		return pathMatch?.[1] ?? '';
+	}
 </script>
 
 <div class="circular-menu desktop-only" class:visible>
-	{#each links as link, i}
+	{#each links as link, i (link.name)}
 		{@const pos = getCircularPosition(i, links.length)}
 		{#if link.isInfo}
 			<div
@@ -51,7 +56,9 @@
 				onmouseenter={() => (hoveredInfo = true)}
 				onmouseleave={() => (hoveredInfo = false)}
 			>
-				{@html link.icon}
+				<svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+					<path d={getIconPath(link.icon)} />
+				</svg>
 				{#if hoveredInfo}
 					<div class="version-tooltip">ver.{ver}</div>
 				{/if}
@@ -60,7 +67,7 @@
 			<a
 				href={link.url}
 				target="_blank"
-				rel="noopener noreferrer"
+				rel="external noopener noreferrer"
 				class="social-btn circular"
 				title={link.name}
 				style="
@@ -69,7 +76,9 @@
 					--delay: {i * 0.05}s;
 				"
 			>
-				{@html link.icon}
+				<svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+					<path d={getIconPath(link.icon)} />
+				</svg>
 			</a>
 		{/if}
 	{/each}
@@ -77,7 +86,7 @@
 
 <div class="list-menu mobile-only">
 	<div class="list-group">
-		{#each links as link, i}
+		{#each links as link, i (link.name)}
 			{@const shapeClass = getShapeClass(i, links.length)}
 
 			{#if link.isInfo}
@@ -88,7 +97,7 @@
 				<a
 					href={link.url}
 					target="_blank"
-					rel="noopener noreferrer"
+					rel="external noopener noreferrer"
 					class="social-btn list-item {shapeClass}"
 					style="--delay: {i * 0.05}s"
 				>
@@ -118,10 +127,10 @@
 
 	.social-btn.circular {
 		position: absolute;
-		width: 52px;
-		height: 52px;
+		width: 74px;
+		height: 74px;
 		background: rgba(35, 35, 35, 0.95);
-		border-radius: 14px;
+		border-radius: 18px;
 		display: flex;
 		align-items: center;
 		justify-content: center;
@@ -131,7 +140,9 @@
 		top: 50%;
 		transform: translate(-50%, -50%) scale(0);
 		opacity: 0;
-		transition: transform 0.5s cubic-bezier(0.34, 1.56, 0.64, 1), opacity 0.3s ease;
+		transition:
+			transform 0.5s cubic-bezier(0.34, 1.56, 0.64, 1),
+			opacity 0.3s ease;
 		transition-delay: var(--delay);
 	}
 
@@ -145,13 +156,15 @@
 		transform: translate(calc(-50% + var(--x)), calc(-50% + var(--y))) scale(1.15) !important;
 	}
 
-	.social-btn.circular :global(svg) {
-		width: 24px;
-		height: 24px;
+	.social-btn.circular svg {
+		width: 40px;
+		height: 40px;
 		fill: rgba(255, 255, 255, 0.85);
 	}
 
-	.info-btn { cursor: default; }
+	.info-btn {
+		cursor: default;
+	}
 	.version-tooltip {
 		position: absolute;
 		top: 50%;
@@ -159,8 +172,8 @@
 		transform: translateY(-50%);
 		background: rgba(25, 25, 25, 0.95);
 		padding: 8px 14px;
-		border-radius: 10px;
-		font-size: 13px;
+		border-radius: 12px;
+		font-size: 20px;
 		color: rgba(255, 255, 255, 0.8);
 		white-space: nowrap;
 		animation: tooltipSlideLeft 0.2s ease;
@@ -177,9 +190,8 @@
 		}
 	}
 
-
 	/* --- MOBILE LIST STYLES --- */
-	
+
 	.list-menu {
 		display: none;
 		width: 100%;
@@ -191,20 +203,20 @@
 	.list-group {
 		display: flex;
 		flex-direction: column;
-		gap: 3px; 
+		gap: 3px;
 		width: 100%;
 	}
 
 	.social-btn.list-item {
 		width: 100%;
-		padding: 20px 28px; 
-		background-color: #222222; 
+		padding: 20px 28px;
+		background-color: #222222;
 		border: none;
 		display: flex;
 		align-items: center;
 		text-decoration: none;
 		transition: background-color 0.2s ease;
-		
+
 		font-family: sans-serif;
 		font-size: large;
 	}
@@ -216,37 +228,42 @@
 	.link-name {
 		font-size: 22px;
 		font-weight: 400;
-		color: #E0E0E0;
+		color: #e0e0e0;
 		letter-spacing: 0.4px;
 	}
 
 	/* --- Shapes --- */
-	
+
 	.shape-single {
 		border-radius: 20px;
 	}
-	
+
 	.shape-top {
 		border-radius: 20px 20px 5px 5px;
 	}
-	
 
 	.shape-middle {
 		border-radius: 4px;
 	}
-	
+
 	.shape-bottom {
 		border-radius: 4px 4px 20px 20px;
 	}
 
 	/* Responsive */
-	.desktop-only { display: block; }
-	.mobile-only { display: none; }
+	.desktop-only {
+		display: block;
+	}
+	.mobile-only {
+		display: none;
+	}
 
 	@media (max-width: 768px) {
-		.desktop-only { display: none; }
-		.mobile-only { 
-			display: flex; 
+		.desktop-only {
+			display: none;
+		}
+		.mobile-only {
+			display: flex;
 			justify-content: center;
 		}
 	}

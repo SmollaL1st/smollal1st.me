@@ -5,10 +5,30 @@
 	import LogoPattern from '$lib/components/LogoPattern.svelte';
 
 	const username = 'SmollaL1st';
-	const avatarUrl = '/avatar/a_me.png';
+	const avatarUrl = '/avatar/a_me.jpg';
 	const isVerified = true;
 
 	let isHovered = $state(false);
+
+	function handleHoverStart() {
+		isHovered = true;
+	}
+
+	function handleHoverEnd() {
+		isHovered = false;
+	}
+
+	function handleInteractionKeydown(event: KeyboardEvent) {
+		if (event.key === 'Enter' || event.key === ' ') {
+			event.preventDefault();
+			isHovered = !isHovered;
+			return;
+		}
+
+		if (event.key === 'Escape') {
+			isHovered = false;
+		}
+	}
 
 	// Social links
 	const socialLinks = [
@@ -59,8 +79,13 @@
 				class="interaction-area"
 				role="button"
 				tabindex="0"
-				onmouseenter={() => (isHovered = true)}
-				onmouseleave={() => (isHovered = false)}
+				aria-pressed={isHovered}
+				onmouseenter={handleHoverStart}
+				onmouseleave={handleHoverEnd}
+				onfocus={handleHoverStart}
+				onblur={handleHoverEnd}
+				onclick={() => (isHovered = !isHovered)}
+				onkeydown={handleInteractionKeydown}
 			>
 				<SocialLinks links={socialLinks} visible={isHovered} />
 				<ProfileCard {username} {avatarUrl} {isVerified} {isHovered} />
@@ -69,12 +94,7 @@
 
 		<!-- Mobile view -->
 		<div class="mobile-view">
-			<ProfileCard 
-				{username} 
-				{avatarUrl} 
-				{isVerified}
-				isHovered={true}
-			/>
+			<ProfileCard {username} {avatarUrl} {isVerified} isHovered={true} />
 			<SocialLinks links={socialLinks} visible={true} />
 		</div>
 	</main>
@@ -90,7 +110,8 @@
 	:global(html, body) {
 		width: 100%;
 		height: 100%;
-		font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Segoe UI', Roboto, sans-serif;
+		font-family:
+			-apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Segoe UI', Roboto, sans-serif;
 		color: #fff;
 		overflow-x: hidden;
 	}
@@ -125,7 +146,7 @@
 		align-items: center;
 		justify-content: center;
 		cursor: pointer;
-		padding: 100px;
+		padding: 130px;
 	}
 
 	/* Mobile view */

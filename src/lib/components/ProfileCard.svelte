@@ -19,10 +19,11 @@
 
 	<!-- Username - appears on hover (desktop) or always visible (mobile) -->
 	<div class="username-row" class:visible={isHovered}>
-		<span class="username">@{username}
+		<span class="username"
+			>@{username}
 			{#if isVerified}
-			<Verified size={15} />
-		{/if}
+				<Verified size={15} />
+			{/if}
 		</span>
 	</div>
 </div>
@@ -32,7 +33,7 @@
 		display: flex;
 		flex-direction: column;
 		align-items: center;
-		gap: 24px;
+		gap: 30px;
 		z-index: 10;
 	}
 
@@ -42,13 +43,13 @@
 	}
 
 	.profile-card.hovered .avatar-container {
-		transform: scale(1.05);
+		transform: scale(1.08);
 	}
 
 	.avatar {
-		width: 160px;
-		height: 160px;
-		border-radius: 32px;
+		width: 210px;
+		height: 210px;
+		border-radius: 44px;
 		object-fit: cover;
 		display: block;
 		box-shadow: 0 8px 40px rgba(0, 0, 0, 0.5);
@@ -72,21 +73,21 @@
 	}
 
 	.username {
-		font-size: 18px;
+		font-size: 20px;
 		font-weight: 500;
 		color: rgba(255, 255, 255, 0.95);
 		letter-spacing: 0.01em;
 		background-color: #222222;
 		border-radius: 12px;
-		padding: 6px 12px;
+		padding: 8px 14px;
 	}
 
 	/* Mobile styles */
 	@media (max-width: 768px) {
 		.avatar {
-			width: 180px;
-			height: 180px;
-			border-radius: 38px;
+			width: 230px;
+			height: 230px;
+			border-radius: 52px;
 		}
 
 		.username-row {
@@ -97,7 +98,7 @@
 		}
 
 		.username {
-			font-size: 20px;
+			font-size: 24px;
 		}
 	}
 </style>
