@@ -19,8 +19,7 @@
 
 	<!-- Username - appears on hover (desktop) or always visible (mobile) -->
 	<div class="username-row" class:visible={isHovered}>
-		<span class="username"
-			>@{username}
+		<span class="username">@{username}
 			{#if isVerified}
 				<Verified size={15} />
 			{/if}

@@ -1,11 +1,13 @@
 <script lang="ts">
 	import { version } from '$app/environment';
+	import Verified from '$lib/assets/Verified.svelte';
 
 	interface SocialLink {
 		name: string;
 		url: string;
 		icon: string;
 		isInfo?: boolean;
+		isVerified?: boolean;
 	}
 
 	interface Props {
@@ -101,7 +103,11 @@
 					class="social-btn list-item {shapeClass}"
 					style="--delay: {i * 0.05}s"
 				>
-					<span class="link-name">{link.name}</span>
+					<span class="link-name">{link.name}  
+					{#if link.isVerified}
+						<Verified size={14} />
+					{/if}
+					</span>
 				</a>
 			{/if}
 		{/each}
