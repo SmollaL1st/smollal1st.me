@@ -1,7 +1,7 @@
 <script lang="ts">
 	const _description: string = 'Just a man';
-	const _image: string = 'https://smollal1st.me/avatar/a_me.jpg';
-	const title = 'Smo//a L1st';
+	const _image: string = 'https://smollal1st.me/avatar/a_me.png';
+	const title = 'Smo//a L!st';
 </script>
 
 <svelte:head>

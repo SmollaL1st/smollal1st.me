@@ -7,7 +7,7 @@
 		url: string;
 		icon: string;
 		isInfo?: boolean;
-		isVerified?: boolean;
+
 	}
 
 	interface Props {
@@ -103,11 +103,7 @@
 					class="social-btn list-item {shapeClass}"
 					style="--delay: {i * 0.05}s"
 				>
-					<span class="link-name">{link.name}  
-					{#if link.isVerified}
-						<Verified size={14} />
-					{/if}
-					</span>
+					<span class="link-name">{link.name}</span>
 				</a>
 			{/if}
 		{/each}
