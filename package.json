@@ -1,8 +1,9 @@
 {
 	"name": "smollal1st.me",
 	"private": true,
-	"version": "0.3.6.1",
+	"version": "0.4.0.0",
 	"type": "module",
+	"packageManager": "pnpm@11.13.0",
 	"scripts": {
 		"dev": "vite dev",
 		"build": "vite build",
@@ -17,20 +18,19 @@
 		"@eslint/compat": "^2.1.0",
 		"@eslint/js": "^10.0.1",
 		"@sveltejs/adapter-auto": "^7.0.1",
-		"@sveltejs/kit": "^2.64.0",
-		"@sveltejs/vite-plugin-svelte": "^7.1.2",
-		"@types/node": "^25.9.2",
-		"eslint": "^10.4.1",
+		"@sveltejs/kit": "^2.69.3",
+		"@sveltejs/vite-plugin-svelte": "^7.2.0",
+		"@types/node": "^26.1.1",
+		"eslint": "^10.7.0",
 		"eslint-config-prettier": "^10.1.8",
-		"eslint-plugin-svelte": "^3.19.0",
-		"globals": "^17.6.0",
-		"prettier": "^3.8.4",
-		"prettier-plugin-svelte": "^4.1.0",
-		"svelte": "^5.56.3",
-		"svelte-check": "^4.6.0",
-		"typescript": "^6.0.3",
-		"typescript-eslint": "^8.61.0",
-		"vite": "^8.0.16"
-	},
-	"dependencies": {}
+		"eslint-plugin-svelte": "^3.20.0",
+		"globals": "^17.7.0",
+		"prettier": "^3.9.5",
+		"prettier-plugin-svelte": "^4.1.1",
+		"svelte": "^5.56.5",
+		"svelte-check": "^4.7.3",
+		"typescript": "^7.0.2",
+		"typescript-eslint": "^8.64.0",
+		"vite": "^8.1.4"
+	}
 }

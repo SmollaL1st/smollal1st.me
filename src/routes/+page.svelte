@@ -3,12 +3,14 @@
 	import ProfileCard from '$lib/components/ProfileCard.svelte';
 	import SocialLinks from '$lib/components/SocialLinks.svelte';
 	import LogoPattern from '$lib/components/LogoPattern.svelte';
+	import Splash from '$lib/components/Splash.svelte';
 
 	const username = 'SmollaL1st';
-	const avatarUrl = '/avatar/a_me.png';
+	const avatarUrl = '/avatar/a_me.jpg';
 	const isVerified = true;
 
 	let isHovered = $state(false);
+	let showSplash = $state(true);
 
 	function handleHoverStart() {
 		isHovered = true;
@@ -99,6 +101,10 @@
 		</div>
 	</main>
 </div>
+
+{#if showSplash}
+	<Splash onComplete={() => (showSplash = false)} />
+{/if}
 
 <style>
 	:global(*) {

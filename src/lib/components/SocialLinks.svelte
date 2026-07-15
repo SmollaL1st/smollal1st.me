@@ -1,13 +1,11 @@
 <script lang="ts">
 	import { version } from '$app/environment';
-	import Verified from '$lib/assets/Verified.svelte';
 
 	interface SocialLink {
 		name: string;
 		url: string;
 		icon: string;
 		isInfo?: boolean;
-
 	}
 
 	interface Props {
@@ -40,6 +38,27 @@
 		const pathMatch = icon.match(/d="([^"]+)"/);
 		return pathMatch?.[1] ?? '';
 	}
+
+	// Physics: Magnetic hover effect
+	function handleMouseMove(e: MouseEvent) {
+		const target = e.currentTarget as HTMLElement;
+		const rect = target.getBoundingClientRect();
+		const centerX = rect.left + rect.width / 2;
+		const centerY = rect.top + rect.height / 2;
+		
+		const distanceX = e.clientX - centerX;
+		const distanceY = e.clientY - centerY;
+		
+		target.style.setProperty('--mag-x', `${distanceX * 0.35}px`);
+		target.style.setProperty('--mag-y', `${distanceY * 0.35}px`);
+	}
+
+	function handleMouseLeave(e: MouseEvent, isInfo: boolean = false) {
+		const target = e.currentTarget as HTMLElement;
+		target.style.setProperty('--mag-x', `0px`);
+		target.style.setProperty('--mag-y', `0px`);
+		if (isInfo) hoveredInfo = false;
+	}
 </script>
 
 <div class="circular-menu desktop-only" class:visible>
@@ -53,10 +72,11 @@
 				style="
 					--x: {pos.x}px; 
 					--y: {pos.y}px; 
-					--delay: {i * 0.05}s;
+					--delay: {i * 0.06}s;
 				"
 				onmouseenter={() => (hoveredInfo = true)}
-				onmouseleave={() => (hoveredInfo = false)}
+				onmousemove={handleMouseMove}
+				onmouseleave={(e) => handleMouseLeave(e, true)}
 			>
 				<svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
 					<path d={getIconPath(link.icon)} />
@@ -75,8 +95,10 @@
 				style="
 					--x: {pos.x}px; 
 					--y: {pos.y}px; 
-					--delay: {i * 0.05}s;
+					--delay: {i * 0.06}s;
 				"
+				onmousemove={handleMouseMove}
+				onmouseleave={(e) => handleMouseLeave(e)}
 			>
 				<svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
 					<path d={getIconPath(link.icon)} />
@@ -128,6 +150,8 @@
 	}
 
 	.social-btn.circular {
+		--mag-x: 0px;
+		--mag-y: 0px;
 		position: absolute;
 		width: 74px;
 		height: 74px;
@@ -142,20 +166,41 @@
 		top: 50%;
 		transform: translate(-50%, -50%) scale(0);
 		opacity: 0;
+		/* Highly elastic cubic-bezier for a bouncy/plastic opening animation */
 		transition:
-			transform 0.5s cubic-bezier(0.34, 1.56, 0.64, 1),
-			opacity 0.3s ease;
-		transition-delay: var(--delay);
+			transform 0.9s cubic-bezier(0.34, 1.8, 0.64, 1),
+			opacity 0.4s ease,
+			background-color 0.3s ease;
+		transition-delay: var(--delay), 0s, 0s;
 	}
 
 	.circular-menu.visible .social-btn.circular {
-		transform: translate(calc(-50% + var(--x)), calc(-50% + var(--y))) scale(1);
+		transform: translate(
+			calc(-50% + var(--x) + var(--mag-x)), 
+			calc(-50% + var(--y) + var(--mag-y))
+		) scale(1);
 		opacity: 1;
+		/* Add continuous floating effect to make it feel alive */
+		animation: float 4s ease-in-out infinite;
+		animation-delay: calc(var(--delay) * 4);
+	}
+
+	@keyframes float {
+		0%, 100% { margin-top: 0px; }
+		50% { margin-top: -8px; }
 	}
 
 	.social-btn.circular:hover {
 		background: rgba(55, 55, 55, 0.95);
-		transform: translate(calc(-50% + var(--x)), calc(-50% + var(--y))) scale(1.15) !important;
+		transform: translate(
+			calc(-50% + var(--x) + var(--mag-x)), 
+			calc(-50% + var(--y) + var(--mag-y))
+		) scale(1.15) !important;
+		/* Snappy magnetic response on hover */
+		transition:
+			transform 0.25s cubic-bezier(0.175, 0.885, 0.32, 1.275),
+			background-color 0.3s ease;
+		transition-delay: 0s;
 	}
 
 	.social-btn.circular svg {
