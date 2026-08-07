@@ -186,8 +186,8 @@
 	}
 
 	@keyframes float {
-		0%, 100% { margin-top: 0px; }
-		50% { margin-top: -8px; }
+		0%, 100% { translate: 0 0px; }
+		50% { translate: 0 -8px; }
 	}
 
 	.social-btn.circular:hover {
