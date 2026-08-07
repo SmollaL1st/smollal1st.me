@@ -1,7 +1,7 @@
 {
 	"name": "smollal1st.me",
 	"private": true,
-	"version": "0.4.2.2",
+	"version": "0.4.2.3",
 	"type": "module",
 	"packageManager": "pnpm@11.20.0",
 	"scripts": {
@@ -43,7 +43,7 @@
 			"workerd"
 		]
 	},
-	"overrides": {
+	"resolutions": {
 		"wrangler": "4.119.0",
 		"miniflare": "4.20260730.0",
 		"postcss": "8.4.49"
