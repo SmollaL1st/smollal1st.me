@@ -51,7 +51,7 @@ export const PROJECTS: Project[] = [
 	{
 		title: 'smollal1st.me V5',
 		description:
-			'Personal portfolio crafted with Material 3 Expressive aesthetics, dynamic image-based color extraction, and real-time Discord/Spotify presence.',
+			'A personal portfolio created using the expressive aesthetic of Material 3, dynamic image-based color extraction, and a real-time Discord presence.',
 		badge: 'Current',
 		tags: ['SvelteKit', 'Svelte 5', 'TypeScript', 'Vite', 'Cloudflare'],
 		showIcons: true,
