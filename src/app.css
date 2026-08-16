@@ -1,0 +1,236 @@
+/* Material 3 Expressive Design System for smollal1st.me */
+
+/* --------------------------------------------------
+ * 1. Design Tokens & Theme Palettes
+ * -------------------------------------------------- */
+
+:root,
+[data-theme='light'] {
+	--theme: light;
+	--bg-color: #fff8f8;
+	--bg-subtle: #fcedee;
+	--surface: #ffffff;
+	--surface-container-low: #f9edf0;
+	--surface-container: #f7ebec;
+	--surface-container-high: #f0e1e3;
+	--surface-container-highest: #e8d6d9;
+
+	--text-primary: #3a1e26;
+	--text-secondary: #674850;
+	--text-tertiary: #94717a;
+
+	--accent: #8c4a59;
+	--accent-hover: #773c4a;
+	--accent-container: #ffd9df;
+	--on-accent-container: #3b0817;
+	--accent-opacity: rgba(140, 74, 89, 0.14);
+
+	--elevation-one: #f7ebec;
+	--elevation-two: rgba(240, 225, 227, 0.7);
+	--elevation-three: rgba(232, 214, 217, 0.5);
+	--elevation-four: rgba(103, 72, 80, 0.1);
+	--elevation-border: rgba(103, 72, 80, 0.14);
+
+	--badge-bg: #f0e1e3;
+	--badge-text: #674850;
+
+	--font-sans: 'Space Grotesk', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+	--font-mono: 'Space Mono', 'Geist Mono', ui-monospace, SFMono-Regular, Menlo, monospace;
+	--bezier-expressive: cubic-bezier(0.25, 0.46, 0.45, 0.94);
+	--bezier-one: cubic-bezier(0.25, 0.46, 0.45, 0.94);
+	--bezier-bounce: cubic-bezier(0.34, 1.56, 0.64, 1);
+	--radius-sm: 12px;
+	--radius-md: 20px;
+	--radius-lg: 28px;
+	--radius-xl: 36px;
+	--radius-pill: 9999px;
+}
+
+@media (prefers-color-scheme: dark) {
+	:root:not([data-theme='light']) {
+		--theme: dark;
+		--bg-color: #191113;
+		--bg-subtle: #1f1618;
+		--surface: #241b1d;
+		--surface-container-low: #271e20;
+		--surface-container: #2a2022;
+		--surface-container-high: #35292c;
+		--surface-container-highest: #403336;
+
+		--text-primary: #fce2e5;
+		--text-secondary: #d8bec2;
+		--text-tertiary: #b0959a;
+
+		--accent: #ffb1c0;
+		--accent-hover: #ffc2cd;
+		--accent-container: #703241;
+		--on-accent-container: #ffd9df;
+		--accent-opacity: rgba(255, 177, 192, 0.16);
+
+		--elevation-one: #271e20;
+		--elevation-two: rgba(42, 32, 34, 0.75);
+		--elevation-three: rgba(64, 51, 54, 0.5);
+		--elevation-four: rgba(216, 190, 194, 0.1);
+		--elevation-border: rgba(216, 190, 194, 0.14);
+
+		--badge-bg: #35292c;
+		--badge-text: #d8bec2;
+	}
+}
+
+[data-theme='dark'] {
+	--theme: dark;
+	--bg-color: #191113;
+	--bg-subtle: #1f1618;
+	--surface: #241b1d;
+	--surface-container-low: #271e20;
+	--surface-container: #2a2022;
+	--surface-container-high: #35292c;
+	--surface-container-highest: #403336;
+
+	--text-primary: #fce2e5;
+	--text-secondary: #d8bec2;
+	--text-tertiary: #b0959a;
+
+	--accent: #ffb1c0;
+	--accent-hover: #ffc2cd;
+	--accent-container: #703241;
+	--on-accent-container: #ffd9df;
+	--accent-opacity: rgba(255, 177, 192, 0.16);
+
+	--elevation-one: #271e20;
+	--elevation-two: rgba(42, 32, 34, 0.75);
+	--elevation-three: rgba(64, 51, 54, 0.5);
+	--elevation-four: rgba(216, 190, 194, 0.1);
+	--elevation-border: rgba(216, 190, 194, 0.14);
+
+	--badge-bg: #35292c;
+	--badge-text: #d8bec2;
+}
+
+/* --------------------------------------------------
+ * 2. Reset & Global Interactions
+ * -------------------------------------------------- */
+
+*,
+*::before,
+*::after {
+	box-sizing: border-box;
+	margin: 0;
+	padding: 0;
+	-webkit-tap-highlight-color: transparent;
+	-webkit-touch-callout: none;
+	-webkit-user-select: none;
+	user-select: none;
+}
+
+img {
+	-webkit-user-drag: none;
+	user-drag: none;
+	-webkit-user-select: none;
+	user-select: none;
+}
+
+html {
+	color-scheme: light dark;
+	scroll-margin-top: 6rem;
+	overflow-x: clip;
+	-webkit-touch-callout: none;
+	-webkit-user-select: none;
+	user-select: none;
+}
+
+[data-theme='light'] {
+	color-scheme: light;
+}
+
+[data-theme='dark'] {
+	color-scheme: dark;
+}
+
+body {
+	font-family: var(--font-sans);
+	background-color: var(--bg-color);
+	color: var(--text-primary);
+	line-height: 1.5;
+	overflow-x: clip;
+	transition:
+		background-color 0.4s var(--bezier-expressive),
+		color 0.4s var(--bezier-expressive);
+	min-height: 100vh;
+	-webkit-font-smoothing: antialiased;
+	-moz-osx-font-smoothing: grayscale;
+	-webkit-touch-callout: none;
+	-webkit-user-select: none;
+	user-select: none;
+}
+
+/* --------------------------------------------------
+ * 3. Typography Hierarchy
+ * -------------------------------------------------- */
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+	color: var(--text-primary);
+	font-weight: 600;
+	letter-spacing: -0.04em;
+	line-height: 1.1;
+}
+
+h1 {
+	font-size: clamp(3rem, 7vw, 5.5rem);
+	font-weight: 700;
+	letter-spacing: -0.06em;
+}
+
+h2 {
+	font-size: clamp(2rem, 4.5vw, 3.25rem);
+	font-weight: 600;
+	letter-spacing: -0.05em;
+}
+
+h3 {
+	font-size: clamp(1.25rem, 2.5vw, 1.75rem);
+	font-weight: 600;
+}
+
+p {
+	color: var(--text-secondary);
+	font-size: 1.0625rem;
+	line-height: 1.7;
+	letter-spacing: -0.01em;
+}
+
+a {
+	color: inherit;
+	text-decoration: none;
+}
+
+/* --------------------------------------------------
+ * 4. Layout & Utilities
+ * -------------------------------------------------- */
+
+.wrapper {
+	width: min(92%, 68rem);
+	margin-inline: auto;
+}
+
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+	width: 10px;
+	background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+	background-color: var(--elevation-three);
+	border-radius: var(--radius-pill);
+	border: 2px solid var(--bg-color);
+}
+
+::-webkit-scrollbar-thumb:hover {
+	background-color: var(--accent);
+}
