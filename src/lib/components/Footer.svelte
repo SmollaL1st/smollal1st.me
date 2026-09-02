@@ -23,7 +23,7 @@
 				target="_blank"
 				rel="external noopener noreferrer"
 				class="version-link"
-				title="Visit smollal1st.me V4"
+				title="Visit sml1.me V4"
 			>
 				<span>v4</span>
 				<span class="arrow" aria-hidden="true">↗</span>
@@ -31,7 +31,7 @@
 		</div>
 
 		<div class="copyright-wrapper">
-			<span class="copyright">© {new Date().getFullYear()} {PROFILE.name}</span>
+			<span class="copyright">© 2021-{new Date().getFullYear()} {PROFILE.name}</span>
 		</div>
 	</div>
 </footer>
