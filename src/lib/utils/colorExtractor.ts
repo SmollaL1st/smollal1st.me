@@ -1,9 +1,16 @@
 /**
- * Dynamic Material 3 Expressive Palette Engine using Google's Official @material/material-color-utilities
+ * Dynamic Material 3 Expressive (Monet) Palette Engine using Google's Official @material/material-color-utilities
  */
+import {
+	sourceColorFromImageBytes,
+	themeFromSourceColor,
+	hexFromArgb
+} from '@material/material-color-utilities';
+import { FAVICON_PATHS } from '$lib/data/logo';
 
 export interface M3ThemePalette {
 	theme?: any;
+	sourceColor: string;
 	light: {
 		background: string;
 		bgSubtle: string;
@@ -19,7 +26,13 @@ export interface M3ThemePalette {
 		accentHover: string;
 		accentContainer: string;
 		onAccentContainer: string;
+		accentOpacity: string;
+		elevationOne: string;
+		elevationTwo: string;
+		elevationThree: string;
 		elevationBorder: string;
+		badgeBg: string;
+		badgeText: string;
 	};
 	dark: {
 		background: string;
@@ -36,81 +49,160 @@ export interface M3ThemePalette {
 		accentHover: string;
 		accentContainer: string;
 		onAccentContainer: string;
+		accentOpacity: string;
+		elevationOne: string;
+		elevationTwo: string;
+		elevationThree: string;
 		elevationBorder: string;
+		badgeBg: string;
+		badgeText: string;
 	};
 }
 
 let cachedPalette: M3ThemePalette | null = null;
 
+// Built-in fallback ARGB source color for Stanislav's avatar in case of network/offline issues
+const FALLBACK_SOURCE_COLOR = 0xff9d7a39; // Warm golden/amber tone
+
+/**
+ * Builds the comprehensive M3ThemePalette from an ARGB source color
+ */
+function buildPaletteFromSource(sourceArgb: number): M3ThemePalette {
+	const theme = themeFromSourceColor(sourceArgb);
+	const { schemes, palettes } = theme;
+
+	return {
+		theme,
+		sourceColor: hexFromArgb(sourceArgb),
+		light: {
+			background: hexFromArgb(schemes.light.background),
+			bgSubtle: hexFromArgb(palettes.neutral.tone(94)),
+			surface: hexFromArgb(schemes.light.surface),
+			surfaceContainerLow: hexFromArgb(palettes.neutral.tone(96)),
+			surfaceContainer: hexFromArgb(palettes.neutral.tone(92)),
+			surfaceContainerHigh: hexFromArgb(palettes.neutral.tone(88)),
+			surfaceContainerHighest: hexFromArgb(palettes.neutral.tone(84)),
+			textPrimary: hexFromArgb(schemes.light.onSurface),
+			textSecondary: hexFromArgb(schemes.light.onSurfaceVariant),
+			textTertiary: hexFromArgb(schemes.light.outline),
+			accent: hexFromArgb(schemes.light.primary),
+			accentHover: hexFromArgb(palettes.primary.tone(35)),
+			accentContainer: hexFromArgb(schemes.light.primaryContainer),
+			onAccentContainer: hexFromArgb(schemes.light.onPrimaryContainer),
+			accentOpacity: `${hexFromArgb(schemes.light.primary)}20`,
+			elevationOne: hexFromArgb(palettes.neutral.tone(92)),
+			elevationTwo: hexFromArgb(palettes.neutral.tone(88)),
+			elevationThree: hexFromArgb(palettes.neutral.tone(84)),
+			elevationBorder: `${hexFromArgb(schemes.light.outlineVariant)}45`,
+			badgeBg: hexFromArgb(palettes.neutral.tone(88)),
+			badgeText: hexFromArgb(schemes.light.onSurfaceVariant)
+		},
+		dark: {
+			background: hexFromArgb(schemes.dark.background),
+			bgSubtle: hexFromArgb(palettes.neutral.tone(8)),
+			surface: hexFromArgb(schemes.dark.surface),
+			surfaceContainerLow: hexFromArgb(palettes.neutral.tone(10)),
+			surfaceContainer: hexFromArgb(palettes.neutral.tone(14)),
+			surfaceContainerHigh: hexFromArgb(palettes.neutral.tone(18)),
+			surfaceContainerHighest: hexFromArgb(palettes.neutral.tone(22)),
+			textPrimary: hexFromArgb(schemes.dark.onSurface),
+			textSecondary: hexFromArgb(schemes.dark.onSurfaceVariant),
+			textTertiary: hexFromArgb(schemes.dark.outline),
+			accent: hexFromArgb(schemes.dark.primary),
+			accentHover: hexFromArgb(palettes.primary.tone(85)),
+			accentContainer: hexFromArgb(schemes.dark.primaryContainer),
+			onAccentContainer: hexFromArgb(schemes.dark.onPrimaryContainer),
+			accentOpacity: `${hexFromArgb(schemes.dark.primary)}26`,
+			elevationOne: hexFromArgb(palettes.neutral.tone(10)),
+			elevationTwo: hexFromArgb(palettes.neutral.tone(14)),
+			elevationThree: hexFromArgb(palettes.neutral.tone(22)),
+			elevationBorder: `${hexFromArgb(schemes.dark.outlineVariant)}40`,
+			badgeBg: hexFromArgb(palettes.neutral.tone(18)),
+			badgeText: hexFromArgb(schemes.dark.onSurfaceVariant)
+		}
+	};
+}
+
+/**
+ * Extracts dominant Monet color from an image URL using a fast, non-blocking 128x128 canvas
+ */
 export async function extractColorFromImage(imageUrl: string): Promise<M3ThemePalette> {
 	if (typeof window === 'undefined') {
-		throw new Error('Color extraction is only supported in client environment');
+		return buildPaletteFromSource(FALLBACK_SOURCE_COLOR);
 	}
 
-	const { themeFromImage, hexFromArgb } = await import('@material/material-color-utilities');
+	try {
+		// Method 1: Fetch as blob with CORS mode (safest against canvas tainting)
+		const sourceArgb = await extractViaFetch(imageUrl);
+		const palette = buildPaletteFromSource(sourceArgb);
+		cachedPalette = palette;
+		return palette;
+	} catch (e1) {
+		console.debug('Fetch-based color extraction failed, trying Image element fallback:', e1);
+		try {
+			// Method 2: Standard Image element fallback
+			const sourceArgb = await extractViaImageElement(imageUrl);
+			const palette = buildPaletteFromSource(sourceArgb);
+			cachedPalette = palette;
+			return palette;
+		} catch (e2) {
+			console.debug('Image element extraction failed, using avatar fallback:', e2);
+			// Method 3: Deterministic fallback from avatar key colors
+			const palette = buildPaletteFromSource(FALLBACK_SOURCE_COLOR);
+			cachedPalette = palette;
+			return palette;
+		}
+	}
+}
 
+async function extractViaFetch(imageUrl: string): Promise<number> {
+	const response = await fetch(imageUrl, { mode: 'cors' });
+	if (!response.ok) throw new Error(`HTTP ${response.status}`);
+	const blob = await response.blob();
+
+	let imageSource: ImageBitmap | HTMLImageElement;
+	if (typeof createImageBitmap === 'function') {
+		imageSource = await createImageBitmap(blob);
+	} else {
+		imageSource = await new Promise<HTMLImageElement>((resolve, reject) => {
+			const img = new Image();
+			img.onload = () => resolve(img);
+			img.onerror = reject;
+			img.src = URL.createObjectURL(blob);
+		});
+	}
+
+	return extractFromDrawable(imageSource);
+}
+
+function extractViaImageElement(imageUrl: string): Promise<number> {
 	return new Promise((resolve, reject) => {
 		const img = new Image();
 		img.crossOrigin = 'Anonymous';
-		img.src = imageUrl;
-
-		img.onload = async () => {
+		img.onload = () => {
 			try {
-				const theme = await themeFromImage(img);
-				const { schemes, palettes } = theme;
-
-				const palette: M3ThemePalette = {
-					theme,
-					light: {
-						background: hexFromArgb(schemes.light.background),
-						bgSubtle: hexFromArgb(palettes.neutral.tone(94)),
-						surface: hexFromArgb(schemes.light.surface),
-						surfaceContainerLow: hexFromArgb(palettes.neutral.tone(96)),
-						surfaceContainer: hexFromArgb(palettes.neutral.tone(92)),
-						surfaceContainerHigh: hexFromArgb(palettes.neutral.tone(88)),
-						surfaceContainerHighest: hexFromArgb(palettes.neutral.tone(84)),
-						textPrimary: hexFromArgb(schemes.light.onSurface),
-						textSecondary: hexFromArgb(schemes.light.onSurfaceVariant),
-						textTertiary: hexFromArgb(schemes.light.outline),
-						accent: hexFromArgb(schemes.light.primary),
-						accentHover: hexFromArgb(palettes.primary.tone(35)),
-						accentContainer: hexFromArgb(schemes.light.primaryContainer),
-						onAccentContainer: hexFromArgb(schemes.light.onPrimaryContainer),
-						elevationBorder: hexFromArgb(schemes.light.outlineVariant)
-					},
-					dark: {
-						background: hexFromArgb(schemes.dark.background),
-						bgSubtle: hexFromArgb(palettes.neutral.tone(8)),
-						surface: hexFromArgb(schemes.dark.surface),
-						surfaceContainerLow: hexFromArgb(palettes.neutral.tone(10)),
-						surfaceContainer: hexFromArgb(palettes.neutral.tone(14)),
-						surfaceContainerHigh: hexFromArgb(palettes.neutral.tone(18)),
-						surfaceContainerHighest: hexFromArgb(palettes.neutral.tone(22)),
-						textPrimary: hexFromArgb(schemes.dark.onSurface),
-						textSecondary: hexFromArgb(schemes.dark.onSurfaceVariant),
-						textTertiary: hexFromArgb(schemes.dark.outline),
-						accent: hexFromArgb(schemes.dark.primary),
-						accentHover: hexFromArgb(palettes.primary.tone(85)),
-						accentContainer: hexFromArgb(schemes.dark.primaryContainer),
-						onAccentContainer: hexFromArgb(schemes.dark.onPrimaryContainer),
-						elevationBorder: hexFromArgb(schemes.dark.outlineVariant)
-					}
-				};
-
-				cachedPalette = palette;
-				resolve(palette);
+				resolve(extractFromDrawable(img));
 			} catch (err) {
 				reject(err);
 			}
 		};
-
-		img.onerror = (err) => {
-			reject(err);
-		};
+		img.onerror = reject;
+		img.src = imageUrl;
 	});
 }
 
-import { FAVICON_PATHS } from '$lib/data/logo';
+function extractFromDrawable(drawable: ImageBitmap | HTMLImageElement): number {
+	const canvas = document.createElement('canvas');
+	const size = 128; // Scaled sample for ultra-fast, non-blocking extraction
+	canvas.width = size;
+	canvas.height = size;
+	const ctx = canvas.getContext('2d');
+	if (!ctx) throw new Error('Cannot get 2d canvas context');
+
+	ctx.drawImage(drawable, 0, 0, size, size);
+	const imageData = ctx.getImageData(0, 0, size, size);
+	return sourceColorFromImageBytes(imageData.data);
+}
 
 export function updateDynamicFavicon(palette?: M3ThemePalette, isDark?: boolean) {
 	if (typeof document === 'undefined') return;
@@ -149,6 +241,10 @@ export function updateDynamicFavicon(palette?: M3ThemePalette, isDark?: boolean)
 	} catch (_) {}
 }
 
+/**
+ * Injects dynamic Monet CSS custom properties with maximum specificity (:root[data-theme='...'])
+ * and moves the style tag to the end of <head> so it takes precedence over static styles.
+ */
 export function applyDynamicM3Palette(palette: M3ThemePalette) {
 	if (typeof document === 'undefined') return;
 
@@ -159,11 +255,11 @@ export function applyDynamicM3Palette(palette: M3ThemePalette) {
 	if (!styleEl) {
 		styleEl = document.createElement('style');
 		styleEl.id = 'dynamic-m3-palette';
-		document.head.appendChild(styleEl);
 	}
 
 	const cssContent = `
-		:root, [data-theme="dark"] {
+		:root[data-theme="dark"], html[data-theme="dark"] {
+			--theme: dark;
 			--bg-color: ${dark.background};
 			--bg-subtle: ${dark.bgSubtle};
 			--surface: ${dark.surface};
@@ -180,18 +276,21 @@ export function applyDynamicM3Palette(palette: M3ThemePalette) {
 			--accent-hover: ${dark.accentHover};
 			--accent-container: ${dark.accentContainer};
 			--on-accent-container: ${dark.onAccentContainer};
-			--accent-opacity: ${dark.accent}26;
+			--accent-opacity: ${dark.accentOpacity};
 			
-			--elevation-one: ${dark.surfaceContainerLow};
-			--elevation-two: ${dark.surfaceContainer};
-			--elevation-three: ${dark.surfaceContainerHighest};
-			--elevation-border: ${dark.elevationBorder}40;
+			--elevation-one: ${dark.elevationOne};
+			--elevation-two: ${dark.elevationTwo};
+			--elevation-three: ${dark.elevationThree};
+			--elevation-border: ${dark.elevationBorder};
+			--badge-bg: ${dark.badgeBg};
+			--badge-text: ${dark.badgeText};
 		}
 
-		[data-theme="light"] {
+		:root[data-theme="light"], html[data-theme="light"] {
+			--theme: light;
 			--bg-color: ${light.background};
 			--bg-subtle: ${light.bgSubtle};
-			--surface: #ffffff;
+			--surface: ${light.surface};
 			--surface-container-low: ${light.surfaceContainerLow};
 			--surface-container: ${light.surfaceContainer};
 			--surface-container-high: ${light.surfaceContainerHigh};
@@ -205,18 +304,22 @@ export function applyDynamicM3Palette(palette: M3ThemePalette) {
 			--accent-hover: ${light.accentHover};
 			--accent-container: ${light.accentContainer};
 			--on-accent-container: ${light.onAccentContainer};
-			--accent-opacity: ${light.accent}20;
+			--accent-opacity: ${light.accentOpacity};
 			
-			--elevation-one: ${light.surfaceContainer};
-			--elevation-two: ${light.surfaceContainerHigh};
-			--elevation-three: ${light.surfaceContainerHighest};
-			--elevation-border: ${light.elevationBorder}45;
+			--elevation-one: ${light.elevationOne};
+			--elevation-two: ${light.elevationTwo};
+			--elevation-three: ${light.elevationThree};
+			--elevation-border: ${light.elevationBorder};
+			--badge-bg: ${light.badgeBg};
+			--badge-text: ${light.badgeText};
 		}
 	`;
 
 	styleEl.textContent = cssContent;
+	// Always append to end of head to beat any preceding stylesheet links
+	document.head.appendChild(styleEl);
 
-	// Cache CSS in localStorage to prevent any color flash/jump on future loads
+	// Cache CSS in localStorage to prevent any color flash on future loads
 	try {
 		localStorage.setItem('dynamic-m3-css', cssContent);
 	} catch (_) {}

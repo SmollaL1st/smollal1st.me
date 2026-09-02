@@ -16,7 +16,7 @@
 			const palette = await extractColorFromImage(PROFILE.avatarUrl);
 			applyDynamicM3Palette(palette);
 		} catch (e) {
-			console.debug('Dynamic palette generation error:', e);
+			console.error('Dynamic Monet palette generation error:', e);
 		}
 	});
 
@@ -147,7 +147,13 @@
 					: 1}, {isHovered ? 1.02 : 1}, 1);
 				"
 			>
-				<img src={PROFILE.avatarUrl} alt={PROFILE.name} class="avatar-image" loading="eager" />
+				<img
+					src={PROFILE.avatarUrl}
+					alt={PROFILE.name}
+					class="avatar-image"
+					loading="eager"
+					crossorigin="anonymous"
+				/>
 			</div>
 		</div>
 	</div>
