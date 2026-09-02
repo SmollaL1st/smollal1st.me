@@ -1,8 +1,9 @@
 {
 	"name": "smollal1st.me",
 	"private": true,
-	"version": "0.5.1.2",
+	"version": "0.5.1.3",
 	"type": "module",
+	"packageManager": "pnpm@10.11.1",
 	"scripts": {
 		"dev": "vite dev",
 		"build": "vite build",
