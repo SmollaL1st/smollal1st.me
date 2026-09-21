@@ -79,10 +79,6 @@
 			{/each}
 		</h1>
 
-		<!-- Role & Subtitle -->
-		<p class="hero-role">{PROFILE.role}</p>
-		<p class="hero-desc">{PROFILE.subtitle}</p>
-
 		<!-- Social Links Row -->
 		<div class="socials-row">
 			{#each SOCIAL_LINKS as link}
@@ -217,21 +213,6 @@
 
 	.hero-char.special:hover {
 		transform: translateY(-10px) scale(1.22) rotate(-4deg);
-	}
-
-	.hero-role {
-		font-size: clamp(1.3rem, 2.5vw, 1.85rem);
-		font-weight: 400;
-		color: var(--text-secondary);
-		letter-spacing: -0.03em;
-		line-height: 1.3;
-	}
-
-	.hero-desc {
-		font-size: clamp(1rem, 1.6vw, 1.15rem);
-		color: var(--text-tertiary);
-		max-width: 34rem;
-		line-height: 1.65;
 	}
 
 	/* Socials Row */

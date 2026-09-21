@@ -4,8 +4,6 @@ export const PROFILE = {
 	name: 'Smo//a L!st',
 	displayName: 'SmollaL1st',
 	handle: 'SmollaL1st',
-	role: 'Software Engineer & UI/UX Craftsman',
-	subtitle: 'Crafting thoughtful digital interfaces, full-stack applications & open source tools.',
 	bio: `Hey! I'm SmollaL1st, a developer with a deep love for tactile user experiences, clean architecture, and modern web design. I enjoy building snappy, aesthetic applications with SvelteKit, TypeScript, and modern web technologies. Always experimenting with physics-based UI, motion, and system ergonomics.`,
 	location: 'Europe',
 	timezone: 'Europe/Kyiv',

@@ -1,9 +1,9 @@
 {
 	"name": "smollal1st.me",
 	"private": true,
-	"version": "0.5.1.4",
+	"version": "0.5.2.0",
 	"type": "module",
-	"packageManager": "pnpm@10.11.1",
+	"packageManager": "pnpm@12.5.1",
 	"scripts": {
 		"dev": "vite dev",
 		"build": "vite build",
@@ -18,16 +18,16 @@
 		"@sveltejs/adapter-auto": "^7.0.1",
 		"@sveltejs/kit": "^2.70.3",
 		"@sveltejs/vite-plugin-svelte": "^7.3.0",
-		"prettier": "^3.9.6",
+		"prettier": "^3.9.8",
 		"prettier-plugin-svelte": "^4.1.1",
-		"svelte": "^5.57.0",
+		"svelte": "^5.57.1",
 		"svelte-check": "^4.7.6",
 		"typescript": "^7.0.2",
-		"vite": "^8.2.2"
+		"vite": "^8.3.0"
 	},
 	"dependencies": {
-		"@lucide/svelte": "^1.39.0",
+		"@lucide/svelte": "^1.47.0",
 		"@material/material-color-utilities": "^0.4.0",
-		"simple-icons": "^16.29.0"
+		"simple-icons": "^16.32.0"
 	}
 }
