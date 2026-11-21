@@ -1,3 +1,8 @@
 allowBuilds:
   esbuild: true
   workerd: false
+
+# Same supply-chain policy as the Cloudflare build (pnpm 12 default: 1 day).
+# Set here so local installs/updates can't pick versions Cloudflare will reject,
+# regardless of the global pnpm config on this machine.
+minimumReleaseAge: 1440
