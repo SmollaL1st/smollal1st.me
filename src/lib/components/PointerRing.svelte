@@ -37,12 +37,14 @@
 		height: 30px;
 		width: 30px;
 		border-radius: 100px;
-		border: 1px solid var(--text-secondary);
+		border: 1.5px solid var(--md-sys-color-outline);
 		position: fixed;
 		z-index: 30;
 		opacity: 0;
 		pointer-events: none;
-		transition: 0.3s all var(--bezier-one);
+		transition:
+			transform var(--m3-default-spatial),
+			opacity var(--m3-slow-effects);
 	}
 
 	@media (pointer: coarse) {

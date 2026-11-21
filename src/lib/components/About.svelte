@@ -1,25 +1,26 @@
 <script lang="ts">
-	import ActivityCard from '$lib/components/ActivityCard.svelte';
-	import Logo from '$lib/components/Logo.svelte';
+	import ActivityCard from '#lib/components/ActivityCard.svelte';
+	import Logo from '#lib/components/Logo.svelte';
+	import SectionHeader from '#lib/components/SectionHeader.svelte';
 </script>
 
 <section id="about" class="about-section wrapper">
-	<!-- Left: Live Activity Widget -->
+	<!-- Left: live activity widget -->
 	<div class="activity-col">
-		<h2 class="section-title">activity</h2>
+		<SectionHeader title="activity" shape="cookie6" tone="tertiary" />
 		<ActivityCard />
 	</div>
 
-	<!-- Right: Bio and Background -->
+	<!-- Right: bio -->
 	<div class="bio-col">
-		<h2 class="section-title">bio</h2>
+		<SectionHeader title="bio" shape="clover4" rotation={45} tone="primary" />
 
-		<!-- Outline Watermark (affa.nz style: attached to bio, overflowing horizontally to the right) -->
+		<!-- Outline watermark, overflowing to the right -->
 		<div class="bio-watermark" aria-hidden="true">
 			<Logo variant="stroke" strokeWidth={2.5} class="bio-watermark-svg" />
 		</div>
 
-		<div class="bio-text-card">
+		<div class="bio-card">
 			<p>
 				My name is <b>Stanislav</b>. I'm <b>21</b> years old, originally from <b>Ukraine</b>, and a
 				self-taught programmer who started programming in <b>2021</b>. I'm a big fan of Kotlin and
@@ -35,70 +36,67 @@
 
 <style>
 	.about-section {
-		display: grid;
-		grid-template-columns: 0.9fr 1.1fr;
-		gap: 40px;
-		align-items: start;
-		padding: 80px 0 60px;
 		position: relative;
 		z-index: 2;
-	}
-
-	.section-title {
-		margin-bottom: 20px;
-		font-size: clamp(2rem, 4vw, 2.75rem);
-		font-weight: 600;
-		letter-spacing: -0.05em;
-		color: var(--text-primary);
+		display: grid;
+		grid-template-columns: 0.9fr 1.1fr;
+		align-items: start;
+		gap: 40px;
+		padding-block: 80px 56px;
 	}
 
 	.bio-col {
+		position: relative;
 		display: flex;
 		flex-direction: column;
-		position: relative;
 	}
 
-	/* Outline Watermark (affa.nz style: attached to bio, overflowing horizontally) */
 	.bio-watermark {
 		position: absolute;
-		right: 0;
 		top: 52%;
+		right: 0;
+		z-index: 0;
 		width: clamp(260px, 32vw, 420px);
-		height: auto;
+		color: var(--md-sys-color-outline-variant);
+		opacity: 0.55;
 		transform: translate(65%, -10%) rotate(-6deg);
 		pointer-events: none;
-		user-select: none;
-		z-index: 0;
-		color: var(--text-primary);
-		opacity: 0.22;
-		transition:
-			opacity 0.3s ease,
-			color 0.3s ease;
+		transition: color var(--m3-slow-effects);
 	}
 
 	:global(.bio-watermark-svg) {
+		display: block;
 		width: 100%;
 		height: auto;
-		display: block;
 	}
 
-	.bio-text-card {
-		display: flex;
-		flex-direction: column;
-		gap: 18px;
-		background-color: var(--surface-container);
-		border-radius: var(--radius-lg);
-		padding: 28px;
-		box-shadow: none;
+	.bio-card {
 		position: relative;
 		z-index: 2;
+		padding: 32px;
+		border-radius: var(--md-sys-shape-corner-extra-large-increased);
+		background-color: var(--md-sys-color-surface-container);
+		transition: border-radius var(--m3-default-spatial);
+	}
+
+	.bio-card:hover {
+		border-radius: var(--md-sys-shape-corner-extra-extra-large);
+	}
+
+	.bio-card b {
+		color: var(--md-sys-color-primary);
+		font-weight: 650;
 	}
 
 	@media (max-width: 868px) {
 		.about-section {
 			grid-template-columns: 1fr;
 			gap: 36px;
-			padding: 40px 0 30px;
+			padding-block: 40px 24px;
+		}
+
+		.bio-card {
+			padding: 24px;
 		}
 
 		.bio-watermark {

@@ -1,115 +1,241 @@
-/* Material 3 Expressive Design System for smollal1st.me */
+/* =====================================================================
+ * Material 3 Expressive design system — smollal1st.me
+ * Token names follow the official md.sys.* / md.ref.* naming.
+ * ===================================================================== */
 
 /* --------------------------------------------------
- * 1. Design Tokens & Theme Palettes
+ * 1. Color
+ *    Static fallback generated from the avatar seed (#2b4c66) with
+ *    SchemeExpressive + 2025 spec. colorExtractor.ts overrides these at
+ *    runtime with the same roles. light-dark() follows `color-scheme`.
  * -------------------------------------------------- */
 
-:root,
-[data-theme='light'] {
-	--theme: light;
-	--bg-color: #fff8f8;
-	--bg-subtle: #fcedee;
-	--surface: #ffffff;
-	--surface-container-low: #f9edf0;
-	--surface-container: #f7ebec;
-	--surface-container-high: #f0e1e3;
-	--surface-container-highest: #e8d6d9;
-
-	--text-primary: #3a1e26;
-	--text-secondary: #674850;
-	--text-tertiary: #94717a;
-
-	--accent: #8c4a59;
-	--accent-hover: #773c4a;
-	--accent-container: #ffd9df;
-	--on-accent-container: #3b0817;
-	--accent-opacity: rgba(140, 74, 89, 0.14);
-
-	--elevation-one: #f7ebec;
-	--elevation-two: rgba(240, 225, 227, 0.7);
-	--elevation-three: rgba(232, 214, 217, 0.5);
-	--elevation-four: rgba(103, 72, 80, 0.1);
-	--elevation-border: rgba(103, 72, 80, 0.14);
-
-	--badge-bg: #f0e1e3;
-	--badge-text: #674850;
-
-	--font-sans: 'Space Grotesk', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-	--font-mono: 'Space Mono', 'Geist Mono', ui-monospace, SFMono-Regular, Menlo, monospace;
-	--bezier-expressive: cubic-bezier(0.25, 0.46, 0.45, 0.94);
-	--bezier-one: cubic-bezier(0.25, 0.46, 0.45, 0.94);
-	--bezier-bounce: cubic-bezier(0.34, 1.56, 0.64, 1);
-	--radius-sm: 12px;
-	--radius-md: 20px;
-	--radius-lg: 28px;
-	--radius-xl: 36px;
-	--radius-pill: 9999px;
+:root {
+	color-scheme: light dark;
+	--md-sys-color-primary: light-dark(#006497, #aad6ff);
+	--md-sys-color-on-primary: light-dark(#f6f9ff, #064b72);
+	--md-sys-color-primary-container: light-dark(#84c8ff, #95c9f6);
+	--md-sys-color-on-primary-container: light-dark(#004063, #004266);
+	--md-sys-color-inverse-primary: light-dark(#6bbdfd, #2c638b);
+	--md-sys-color-primary-fixed: light-dark(#84c8ff, #95c9f6);
+	--md-sys-color-primary-fixed-dim: light-dark(#68bbfa, #88bbe8);
+	--md-sys-color-on-primary-fixed: light-dark(#002a43, #002d47);
+	--md-sys-color-on-primary-fixed-variant: light-dark(#004970, #064b72);
+	--md-sys-color-secondary: light-dark(#78546c, #dcbed0);
+	--md-sys-color-on-secondary: light-dark(#fff7f9, #4f3a48);
+	--md-sys-color-secondary-container: light-dark(#ffd7ef, #33202d);
+	--md-sys-color-on-secondary-container: light-dark(#6a475f, #b89cad);
+	--md-sys-color-secondary-fixed: light-dark(#ffd7ef, #fadaec);
+	--md-sys-color-secondary-fixed-dim: light-dark(#f6c7e4, #ebccde);
+	--md-sys-color-on-secondary-fixed: light-dark(#56354c, #4e3947);
+	--md-sys-color-on-secondary-fixed-variant: light-dark(#745069, #6c5564);
+	--md-sys-color-tertiary: light-dark(#934276, #ffaedc);
+	--md-sys-color-on-tertiary: light-dark(#fff7f8, #6d2356);
+	--md-sys-color-tertiary-container: light-dark(#fa9ad3, #fa9ad3);
+	--md-sys-color-on-tertiary-container: light-dark(#62184b, #62184b);
+	--md-sys-color-tertiary-fixed: light-dark(#fa9ad3, #fa9ad3);
+	--md-sys-color-tertiary-fixed-dim: light-dark(#eb8dc5, #eb8dc5);
+	--md-sys-color-on-tertiary-fixed: light-dark(#440033, #440033);
+	--md-sys-color-on-tertiary-fixed-variant: light-dark(#6d2255, #6d2255);
+	--md-sys-color-error: light-dark(#ac3434, #ff716c);
+	--md-sys-color-on-error: light-dark(#fff7f6, #490006);
+	--md-sys-color-error-container: light-dark(#f56965, #8a1a1e);
+	--md-sys-color-on-error-container: light-dark(#65000b, #ff9993);
+	--md-sys-color-background: light-dark(#f8f9ff, #050f1b);
+	--md-sys-color-on-background: light-dark(#143454, #d7e7ff);
+	--md-sys-color-surface: light-dark(#f8f9ff, #050f1b);
+	--md-sys-color-surface-dim: light-dark(#c3dcff, #050f1b);
+	--md-sys-color-surface-bright: light-dark(#f8f9ff, #152d47);
+	--md-sys-color-surface-container-lowest: light-dark(#ffffff, #000000);
+	--md-sys-color-surface-container-low: light-dark(#eff4ff, #071422);
+	--md-sys-color-surface-container: light-dark(#e5eeff, #0b1a2b);
+	--md-sys-color-surface-container-high: light-dark(#dce9ff, #0e2034);
+	--md-sys-color-surface-container-highest: light-dark(#d2e4ff, #12273e);
+	--md-sys-color-on-surface: light-dark(#143454, #d7e7ff);
+	--md-sys-color-surface-variant: light-dark(#d2e4ff, #12273e);
+	--md-sys-color-on-surface-variant: light-dark(#446184, #99adc9);
+	--md-sys-color-outline: light-dark(#607da1, #637791);
+	--md-sys-color-outline-variant: light-dark(#97b4db, #364962);
+	--md-sys-color-inverse-surface: light-dark(#010f1f, #f8f9ff);
+	--md-sys-color-inverse-on-surface: light-dark(#8f9eb4, #4c5664);
+	--md-sys-color-shadow: light-dark(#000000, #000000);
+	--md-sys-color-scrim: light-dark(#000000, #000000);
+	--md-sys-color-surface-tint: light-dark(#006497, #aad6ff);
 }
 
-@media (prefers-color-scheme: dark) {
-	:root:not([data-theme='light']) {
-		--theme: dark;
-		--bg-color: #191113;
-		--bg-subtle: #1f1618;
-		--surface: #241b1d;
-		--surface-container-low: #271e20;
-		--surface-container: #2a2022;
-		--surface-container-high: #35292c;
-		--surface-container-highest: #403336;
-
-		--text-primary: #fce2e5;
-		--text-secondary: #d8bec2;
-		--text-tertiary: #b0959a;
-
-		--accent: #ffb1c0;
-		--accent-hover: #ffc2cd;
-		--accent-container: #703241;
-		--on-accent-container: #ffd9df;
-		--accent-opacity: rgba(255, 177, 192, 0.16);
-
-		--elevation-one: #271e20;
-		--elevation-two: rgba(42, 32, 34, 0.75);
-		--elevation-three: rgba(64, 51, 54, 0.5);
-		--elevation-four: rgba(216, 190, 194, 0.1);
-		--elevation-border: rgba(216, 190, 194, 0.14);
-
-		--badge-bg: #35292c;
-		--badge-text: #d8bec2;
-	}
+:root[data-theme='light'] {
+	color-scheme: light;
 }
 
-[data-theme='dark'] {
-	--theme: dark;
-	--bg-color: #191113;
-	--bg-subtle: #1f1618;
-	--surface: #241b1d;
-	--surface-container-low: #271e20;
-	--surface-container: #2a2022;
-	--surface-container-high: #35292c;
-	--surface-container-highest: #403336;
-
-	--text-primary: #fce2e5;
-	--text-secondary: #d8bec2;
-	--text-tertiary: #b0959a;
-
-	--accent: #ffb1c0;
-	--accent-hover: #ffc2cd;
-	--accent-container: #703241;
-	--on-accent-container: #ffd9df;
-	--accent-opacity: rgba(255, 177, 192, 0.16);
-
-	--elevation-one: #271e20;
-	--elevation-two: rgba(42, 32, 34, 0.75);
-	--elevation-three: rgba(64, 51, 54, 0.5);
-	--elevation-four: rgba(216, 190, 194, 0.1);
-	--elevation-border: rgba(216, 190, 194, 0.14);
-
-	--badge-bg: #35292c;
-	--badge-text: #d8bec2;
+:root[data-theme='dark'] {
+	color-scheme: dark;
 }
 
 /* --------------------------------------------------
- * 2. Reset & Global Interactions
+ * 2. Typography, shape, motion, elevation, state
+ * -------------------------------------------------- */
+
+:root {
+	/* Typefaces */
+	--md-ref-typeface-brand: 'Google Sans Flex', 'Google Sans', 'Roboto Flex', system-ui, sans-serif;
+	--md-ref-typeface-plain: 'Google Sans Flex', 'Google Sans', 'Roboto Flex', system-ui, sans-serif;
+	--md-ref-typeface-code: 'Google Sans Code', ui-monospace, SFMono-Regular, Menlo, monospace;
+
+	/* Type scale (font shorthand: weight size/line-height family) */
+	--md-sys-typescale-display-large: 400 3.5625rem/4rem var(--md-ref-typeface-brand);
+	--md-sys-typescale-display-medium: 400 2.8125rem/3.25rem var(--md-ref-typeface-brand);
+	--md-sys-typescale-display-small: 400 2.25rem/2.75rem var(--md-ref-typeface-brand);
+	--md-sys-typescale-headline-large: 400 2rem/2.5rem var(--md-ref-typeface-brand);
+	--md-sys-typescale-headline-medium: 400 1.75rem/2.25rem var(--md-ref-typeface-brand);
+	--md-sys-typescale-headline-small: 400 1.5rem/2rem var(--md-ref-typeface-brand);
+	--md-sys-typescale-title-large: 400 1.375rem/1.75rem var(--md-ref-typeface-brand);
+	--md-sys-typescale-title-medium: 500 1rem/1.5rem var(--md-ref-typeface-plain);
+	--md-sys-typescale-title-small: 500 0.875rem/1.25rem var(--md-ref-typeface-plain);
+	--md-sys-typescale-body-large: 400 1rem/1.5rem var(--md-ref-typeface-plain);
+	--md-sys-typescale-body-medium: 400 0.875rem/1.25rem var(--md-ref-typeface-plain);
+	--md-sys-typescale-body-small: 400 0.75rem/1rem var(--md-ref-typeface-plain);
+	--md-sys-typescale-label-large: 500 0.875rem/1.25rem var(--md-ref-typeface-plain);
+	--md-sys-typescale-label-medium: 500 0.75rem/1rem var(--md-ref-typeface-plain);
+	--md-sys-typescale-label-small: 500 0.6875rem/1rem var(--md-ref-typeface-plain);
+
+	/* Emphasized type scale (M3 Expressive) */
+	--md-sys-typescale-emphasized-display-large: 600 3.5625rem/4rem var(--md-ref-typeface-brand);
+	--md-sys-typescale-emphasized-headline-large: 600 2rem/2.5rem var(--md-ref-typeface-brand);
+	--md-sys-typescale-emphasized-headline-small: 600 1.5rem/2rem var(--md-ref-typeface-brand);
+	--md-sys-typescale-emphasized-title-large: 600 1.375rem/1.75rem var(--md-ref-typeface-brand);
+	--md-sys-typescale-emphasized-title-medium: 700 1rem/1.5rem var(--md-ref-typeface-plain);
+	--md-sys-typescale-emphasized-label-large: 700 0.875rem/1.25rem var(--md-ref-typeface-plain);
+
+	/* Shape — corner scale incl. the M3 Expressive "increased" steps */
+	--md-sys-shape-corner-none: 0px;
+	--md-sys-shape-corner-extra-small: 4px;
+	--md-sys-shape-corner-small: 8px;
+	--md-sys-shape-corner-medium: 12px;
+	--md-sys-shape-corner-large: 16px;
+	--md-sys-shape-corner-large-increased: 20px;
+	--md-sys-shape-corner-extra-large: 28px;
+	--md-sys-shape-corner-extra-large-increased: 32px;
+	--md-sys-shape-corner-extra-extra-large: 48px;
+	--md-sys-shape-corner-full: 9999px;
+
+	/* Motion — M3 Expressive spring tokens as CSS linear() curves.
+	 * spatial = position/size/shape (may overshoot), effects = color/opacity (no bounce). */
+	--md-sys-motion-spring-fast-spatial: linear(
+		0,
+		0.057,
+		0.193,
+		0.366,
+		0.545,
+		0.709,
+		0.845,
+		0.95,
+		1.023,
+		1.068,
+		1.09,
+		1.095,
+		1.088,
+		1.074,
+		1.057,
+		1.04,
+		1.025,
+		1.013,
+		1.003,
+		0.997,
+		0.993,
+		0.991,
+		0.991,
+		0.992,
+		0.993,
+		0.995,
+		0.996,
+		0.998,
+		1
+	);
+	--md-sys-motion-spring-fast-spatial-duration: 360ms;
+	--md-sys-motion-spring-default-spatial: linear(
+		0,
+		0.039,
+		0.132,
+		0.252,
+		0.379,
+		0.502,
+		0.614,
+		0.711,
+		0.791,
+		0.856,
+		0.906,
+		0.944,
+		0.971,
+		0.99,
+		1.002,
+		1.01,
+		1.014,
+		1.015,
+		1.015,
+		1.014,
+		1.012,
+		1.01,
+		1.008,
+		1.006,
+		1.005,
+		1.004,
+		1.002,
+		1.002,
+		1
+	);
+	--md-sys-motion-spring-default-spatial-duration: 430ms;
+	--md-sys-motion-spring-slow-spatial: var(--md-sys-motion-spring-default-spatial);
+	--md-sys-motion-spring-slow-spatial-duration: 600ms;
+	--md-sys-motion-spring-fast-effects: linear(
+		0,
+		0.141,
+		0.377,
+		0.585,
+		0.737,
+		0.839,
+		0.904,
+		0.943,
+		0.967,
+		0.981,
+		0.989,
+		0.994,
+		0.997,
+		0.998,
+		1
+	);
+	--md-sys-motion-spring-fast-effects-duration: 150ms;
+	--md-sys-motion-spring-default-effects: var(--md-sys-motion-spring-fast-effects);
+	--md-sys-motion-spring-default-effects-duration: 230ms;
+	--md-sys-motion-spring-slow-effects: var(--md-sys-motion-spring-fast-effects);
+	--md-sys-motion-spring-slow-effects-duration: 330ms;
+
+	/* Shorthands: "<duration> <easing>" for transitions */
+	--m3-fast-spatial: var(--md-sys-motion-spring-fast-spatial-duration)
+		var(--md-sys-motion-spring-fast-spatial);
+	--m3-default-spatial: var(--md-sys-motion-spring-default-spatial-duration)
+		var(--md-sys-motion-spring-default-spatial);
+	--m3-slow-spatial: var(--md-sys-motion-spring-slow-spatial-duration)
+		var(--md-sys-motion-spring-slow-spatial);
+	--m3-fast-effects: var(--md-sys-motion-spring-fast-effects-duration)
+		var(--md-sys-motion-spring-fast-effects);
+	--m3-default-effects: var(--md-sys-motion-spring-default-effects-duration)
+		var(--md-sys-motion-spring-default-effects);
+	--m3-slow-effects: var(--md-sys-motion-spring-slow-effects-duration)
+		var(--md-sys-motion-spring-slow-effects);
+
+	/* Elevation */
+	--md-sys-elevation-level1: 0 1px 2px 0 rgb(0 0 0 / 0.3), 0 1px 3px 1px rgb(0 0 0 / 0.15);
+	--md-sys-elevation-level2: 0 1px 2px 0 rgb(0 0 0 / 0.3), 0 2px 6px 2px rgb(0 0 0 / 0.15);
+	--md-sys-elevation-level3: 0 1px 3px 0 rgb(0 0 0 / 0.3), 0 4px 8px 3px rgb(0 0 0 / 0.15);
+
+	/* State layers */
+	--md-sys-state-hover-state-layer-opacity: 0.08;
+	--md-sys-state-focus-state-layer-opacity: 0.1;
+	--md-sys-state-pressed-state-layer-opacity: 0.1;
+}
+
+/* --------------------------------------------------
+ * 3. Reset & base
  * -------------------------------------------------- */
 
 *,
@@ -124,50 +250,29 @@
 	user-select: none;
 }
 
-img {
+img,
+image {
 	-webkit-user-drag: none;
-	user-drag: none;
-	-webkit-user-select: none;
-	user-select: none;
 }
 
 html {
-	color-scheme: light dark;
-	scroll-margin-top: 6rem;
+	scroll-padding-top: 6rem;
 	overflow-x: clip;
-	-webkit-touch-callout: none;
-	-webkit-user-select: none;
-	user-select: none;
-}
-
-[data-theme='light'] {
-	color-scheme: light;
-}
-
-[data-theme='dark'] {
-	color-scheme: dark;
 }
 
 body {
-	font-family: var(--font-sans);
-	background-color: var(--bg-color);
-	color: var(--text-primary);
-	line-height: 1.5;
-	overflow-x: clip;
-	transition:
-		background-color 0.4s var(--bezier-expressive),
-		color 0.4s var(--bezier-expressive);
 	min-height: 100vh;
+	overflow-x: clip;
+	background-color: var(--md-sys-color-surface);
+	color: var(--md-sys-color-on-surface);
+	font: var(--md-sys-typescale-body-large);
+	font-optical-sizing: auto;
 	-webkit-font-smoothing: antialiased;
 	-moz-osx-font-smoothing: grayscale;
-	-webkit-touch-callout: none;
-	-webkit-user-select: none;
-	user-select: none;
+	transition:
+		background-color var(--m3-slow-effects),
+		color var(--m3-slow-effects);
 }
-
-/* --------------------------------------------------
- * 3. Typography Hierarchy
- * -------------------------------------------------- */
 
 h1,
 h2,
@@ -175,34 +280,18 @@ h3,
 h4,
 h5,
 h6 {
-	color: var(--text-primary);
+	color: var(--md-sys-color-on-surface);
+	font-family: var(--md-ref-typeface-brand);
 	font-weight: 600;
-	letter-spacing: -0.04em;
+	letter-spacing: -0.02em;
 	line-height: 1.1;
 }
 
-h1 {
-	font-size: clamp(3rem, 7vw, 5.5rem);
-	font-weight: 700;
-	letter-spacing: -0.06em;
-}
-
-h2 {
-	font-size: clamp(2rem, 4.5vw, 3.25rem);
-	font-weight: 600;
-	letter-spacing: -0.05em;
-}
-
-h3 {
-	font-size: clamp(1.25rem, 2.5vw, 1.75rem);
-	font-weight: 600;
-}
-
 p {
-	color: var(--text-secondary);
+	color: var(--md-sys-color-on-surface-variant);
+	font: var(--md-sys-typescale-body-large);
 	font-size: 1.0625rem;
 	line-height: 1.7;
-	letter-spacing: -0.01em;
 }
 
 a {
@@ -210,27 +299,296 @@ a {
 	text-decoration: none;
 }
 
-/* --------------------------------------------------
- * 4. Layout & Utilities
- * -------------------------------------------------- */
+button {
+	font: inherit;
+	color: inherit;
+	background: none;
+	border: none;
+}
+
+:focus-visible {
+	outline: 3px solid var(--md-sys-color-secondary);
+	outline-offset: 2px;
+}
+
+::selection {
+	background-color: var(--md-sys-color-tertiary-container);
+	color: var(--md-sys-color-on-tertiary-container);
+}
 
 .wrapper {
-	width: min(92%, 68rem);
+	width: min(100% - 32px, 70rem);
 	margin-inline: auto;
 }
 
-/* Custom Scrollbar */
 ::-webkit-scrollbar {
 	width: 10px;
 	background: transparent;
 }
 
 ::-webkit-scrollbar-thumb {
-	background-color: var(--elevation-three);
-	border-radius: var(--radius-pill);
-	border: 2px solid var(--bg-color);
+	background-color: var(--md-sys-color-outline-variant);
+	border-radius: var(--md-sys-shape-corner-full);
+	border: 2px solid var(--md-sys-color-surface);
 }
 
 ::-webkit-scrollbar-thumb:hover {
-	background-color: var(--accent);
+	background-color: var(--md-sys-color-primary);
+}
+
+/* --------------------------------------------------
+ * 4. Icons — Material Symbols Rounded (variable FILL / wght)
+ * -------------------------------------------------- */
+
+.m3-icon {
+	--icon-fill: 0;
+	--icon-wght: 400;
+	--icon-size: 24px;
+	display: inline-block;
+	flex-shrink: 0;
+	width: 1em;
+	height: 1em;
+	overflow: hidden;
+	font-family: 'Material Symbols Rounded';
+	font-size: var(--icon-size);
+	font-style: normal;
+	font-weight: normal;
+	line-height: 1;
+	letter-spacing: normal;
+	text-transform: none;
+	white-space: nowrap;
+	word-wrap: normal;
+	direction: ltr;
+	font-feature-settings: 'liga';
+	font-variation-settings:
+		'FILL' var(--icon-fill),
+		'wght' var(--icon-wght),
+		'GRAD' 0,
+		'opsz' 24;
+	-webkit-font-smoothing: antialiased;
+	transition: font-variation-settings var(--m3-default-effects);
+}
+
+/* --------------------------------------------------
+ * 5. Components — buttons, icon buttons, button groups, chips
+ *    Shape morphing: round at rest, squarer when pressed (M3 Expressive).
+ * -------------------------------------------------- */
+
+.m3-btn,
+.m3-icon-btn {
+	--_h: 40px;
+	--_pad: 16px;
+	--_gap: 8px;
+	--_icon: 20px;
+	--_font: var(--md-sys-typescale-label-large);
+	--_round: calc(var(--_h) / 2);
+	--_square: var(--md-sys-shape-corner-medium);
+	--_pressed: var(--md-sys-shape-corner-small);
+	--_bg: transparent;
+	--_fg: var(--md-sys-color-primary);
+	--_outline: transparent;
+	--_shadow: none;
+
+	position: relative;
+	isolation: isolate;
+	display: inline-flex;
+	flex-shrink: 0;
+	align-items: center;
+	justify-content: center;
+	gap: var(--_gap);
+	height: var(--_h);
+	padding-inline: var(--_pad);
+	overflow: hidden;
+	border: none;
+	border-radius: var(--_round);
+	background-color: var(--_bg);
+	color: var(--_fg);
+	box-shadow:
+		inset 0 0 0 1px var(--_outline),
+		var(--_shadow);
+	font: var(--_font);
+	white-space: nowrap;
+	text-decoration: none;
+	cursor: pointer;
+	transition:
+		border-radius var(--m3-fast-spatial),
+		width var(--m3-fast-spatial),
+		transform var(--m3-fast-spatial),
+		background-color var(--m3-default-effects),
+		color var(--m3-default-effects),
+		box-shadow var(--m3-default-effects);
+}
+
+.m3-btn .m3-icon,
+.m3-icon-btn .m3-icon {
+	--icon-size: var(--_icon);
+}
+
+/* State layer */
+.m3-btn::before,
+.m3-icon-btn::before {
+	content: '';
+	position: absolute;
+	inset: 0;
+	z-index: -1;
+	border-radius: inherit;
+	background-color: currentColor;
+	opacity: 0;
+	pointer-events: none;
+	transition: opacity var(--m3-fast-effects);
+}
+
+.m3-btn:hover::before,
+.m3-icon-btn:hover::before {
+	opacity: var(--md-sys-state-hover-state-layer-opacity);
+}
+
+.m3-btn:focus-visible::before,
+.m3-icon-btn:focus-visible::before {
+	opacity: var(--md-sys-state-focus-state-layer-opacity);
+}
+
+.m3-btn:active::before,
+.m3-icon-btn:active::before {
+	opacity: var(--md-sys-state-pressed-state-layer-opacity);
+}
+
+.m3-btn.square,
+.m3-icon-btn.square {
+	border-radius: var(--_square);
+}
+
+.m3-btn:active,
+.m3-icon-btn:active {
+	border-radius: var(--_pressed);
+}
+
+/* Colors */
+.m3-btn.filled,
+.m3-icon-btn.filled {
+	--_bg: var(--md-sys-color-primary);
+	--_fg: var(--md-sys-color-on-primary);
+}
+
+.m3-btn.tonal,
+.m3-icon-btn.tonal {
+	--_bg: var(--md-sys-color-secondary-container);
+	--_fg: var(--md-sys-color-on-secondary-container);
+}
+
+.m3-btn.outlined,
+.m3-icon-btn.outlined {
+	--_outline: var(--md-sys-color-outline-variant);
+	--_fg: var(--md-sys-color-on-surface-variant);
+}
+
+.m3-btn.elevated {
+	--_bg: var(--md-sys-color-surface-container-low);
+	--_shadow: var(--md-sys-elevation-level1);
+}
+
+.m3-btn.text {
+	--_pad: 12px;
+}
+
+.m3-icon-btn.standard {
+	--_fg: var(--md-sys-color-on-surface-variant);
+}
+
+/* Sizes (XS · S · M · L · XL) */
+.m3-btn.xs,
+.m3-icon-btn.xs {
+	--_h: 32px;
+	--_pad: 12px;
+	--_gap: 4px;
+	--_icon: 20px;
+	--_square: var(--md-sys-shape-corner-medium);
+	--_pressed: var(--md-sys-shape-corner-small);
+}
+
+.m3-btn.m,
+.m3-icon-btn.m {
+	--_h: 56px;
+	--_pad: 24px;
+	--_icon: 24px;
+	--_font: var(--md-sys-typescale-title-medium);
+	--_square: var(--md-sys-shape-corner-large);
+	--_pressed: var(--md-sys-shape-corner-medium);
+}
+
+.m3-btn.l,
+.m3-icon-btn.l {
+	--_h: 96px;
+	--_pad: 48px;
+	--_gap: 12px;
+	--_icon: 32px;
+	--_font: var(--md-sys-typescale-headline-small);
+	--_square: var(--md-sys-shape-corner-extra-large);
+	--_pressed: var(--md-sys-shape-corner-large);
+}
+
+/* Icon buttons are square-ish; width can widen in a button group */
+.m3-icon-btn {
+	--_icon: 24px;
+	--_grow: 1;
+	width: calc(var(--_h) * var(--_grow));
+	padding: 0;
+}
+
+.m3-icon-btn.wide {
+	width: calc(var(--_h) * 1.3 * var(--_grow));
+}
+
+/* Standard button group: the pressed button widens, its neighbours make room */
+.m3-btn-group {
+	display: flex;
+	flex-wrap: wrap;
+	align-items: center;
+	gap: 8px;
+}
+
+.m3-btn-group > .m3-icon-btn:active {
+	--_grow: 1.25;
+}
+
+.m3-btn-group:has(> .m3-icon-btn:active) > .m3-icon-btn:not(:active) {
+	--_grow: 0.92;
+}
+
+/* Chips */
+.m3-chip {
+	display: inline-flex;
+	align-items: center;
+	gap: 6px;
+	height: 32px;
+	padding-inline: 12px;
+	border-radius: var(--md-sys-shape-corner-small);
+	box-shadow: inset 0 0 0 1px var(--md-sys-color-outline-variant);
+	color: var(--md-sys-color-on-surface-variant);
+	font: var(--md-sys-typescale-label-large);
+	white-space: nowrap;
+	transition:
+		background-color var(--m3-default-effects),
+		color var(--m3-default-effects),
+		box-shadow var(--m3-default-effects),
+		border-radius var(--m3-fast-spatial);
+}
+
+.m3-chip .m3-icon {
+	--icon-size: 18px;
+}
+
+/* --------------------------------------------------
+ * 6. Accessibility — reduced motion
+ * -------------------------------------------------- */
+
+@media (prefers-reduced-motion: reduce) {
+	*,
+	*::before,
+	*::after {
+		animation-duration: 0.01ms !important;
+		animation-iteration-count: 1 !important;
+		transition-duration: 0.01ms !important;
+		scroll-behavior: auto !important;
+	}
 }

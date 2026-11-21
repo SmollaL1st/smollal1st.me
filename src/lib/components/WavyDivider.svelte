@@ -11,7 +11,7 @@
 		class: className = '',
 		height = 14,
 		strokeWidth = 2,
-		color = 'var(--elevation-border)',
+		color = 'var(--md-sys-color-outline-variant)',
 		margin = '0'
 	}: Props = $props();
 </script>

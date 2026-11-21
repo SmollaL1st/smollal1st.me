@@ -1,8 +1,8 @@
 <script lang="ts">
-	import { PROFILE } from '$lib/data/profile';
+	import { PROFILE } from '#lib/data/profile.ts';
 
 	const title = 'Smo//a L!st';
-	const description = PROFILE.subtitle;
+	const description = PROFILE.bio;
 	const image = PROFILE.avatarUrl;
 	const url = 'https://smollal1st.me';
 </script>

@@ -1,184 +1,152 @@
 /**
- * Dynamic Material 3 Expressive (Monet) Palette Engine using Google's Official @material/material-color-utilities
+ * Material 3 Expressive dynamic color engine.
+ *
+ * Extracts a source color from the avatar and builds a complete M3 color scheme with
+ * Google's @material/material-color-utilities (SchemeExpressive, 2025 color spec). Every role is
+ * emitted as an official `--md-sys-color-*` token using `light-dark()`, so a single rule covers
+ * both themes and switching only flips `color-scheme`.
  */
 import {
+	Hct,
+	SchemeExpressive,
+	MaterialDynamicColors,
 	sourceColorFromImageBytes,
-	themeFromSourceColor,
 	hexFromArgb
 } from '@material/material-color-utilities';
-import { FAVICON_PATHS } from '$lib/data/logo';
+import { FAVICON_PATHS } from '#lib/data/logo.ts';
+import { shapePath } from '#lib/utils/shapes.ts';
 
-export interface M3ThemePalette {
-	theme?: any;
+export const COLOR_ROLES = [
+	'primary',
+	'onPrimary',
+	'primaryContainer',
+	'onPrimaryContainer',
+	'inversePrimary',
+	'primaryFixed',
+	'primaryFixedDim',
+	'onPrimaryFixed',
+	'onPrimaryFixedVariant',
+	'secondary',
+	'onSecondary',
+	'secondaryContainer',
+	'onSecondaryContainer',
+	'secondaryFixed',
+	'secondaryFixedDim',
+	'onSecondaryFixed',
+	'onSecondaryFixedVariant',
+	'tertiary',
+	'onTertiary',
+	'tertiaryContainer',
+	'onTertiaryContainer',
+	'tertiaryFixed',
+	'tertiaryFixedDim',
+	'onTertiaryFixed',
+	'onTertiaryFixedVariant',
+	'error',
+	'onError',
+	'errorContainer',
+	'onErrorContainer',
+	'background',
+	'onBackground',
+	'surface',
+	'surfaceDim',
+	'surfaceBright',
+	'surfaceContainerLowest',
+	'surfaceContainerLow',
+	'surfaceContainer',
+	'surfaceContainerHigh',
+	'surfaceContainerHighest',
+	'onSurface',
+	'surfaceVariant',
+	'onSurfaceVariant',
+	'outline',
+	'outlineVariant',
+	'inverseSurface',
+	'inverseOnSurface',
+	'shadow',
+	'scrim',
+	'surfaceTint'
+] as const;
+
+export type ColorRole = (typeof COLOR_ROLES)[number];
+export type ColorScheme = Record<ColorRole, string>;
+
+export interface M3Palette {
 	sourceColor: string;
-	light: {
-		background: string;
-		bgSubtle: string;
-		surface: string;
-		surfaceContainerLow: string;
-		surfaceContainer: string;
-		surfaceContainerHigh: string;
-		surfaceContainerHighest: string;
-		textPrimary: string;
-		textSecondary: string;
-		textTertiary: string;
-		accent: string;
-		accentHover: string;
-		accentContainer: string;
-		onAccentContainer: string;
-		accentOpacity: string;
-		elevationOne: string;
-		elevationTwo: string;
-		elevationThree: string;
-		elevationBorder: string;
-		badgeBg: string;
-		badgeText: string;
-	};
-	dark: {
-		background: string;
-		bgSubtle: string;
-		surface: string;
-		surfaceContainerLow: string;
-		surfaceContainer: string;
-		surfaceContainerHigh: string;
-		surfaceContainerHighest: string;
-		textPrimary: string;
-		textSecondary: string;
-		textTertiary: string;
-		accent: string;
-		accentHover: string;
-		accentContainer: string;
-		onAccentContainer: string;
-		accentOpacity: string;
-		elevationOne: string;
-		elevationTwo: string;
-		elevationThree: string;
-		elevationBorder: string;
-		badgeBg: string;
-		badgeText: string;
-	};
+	light: ColorScheme;
+	dark: ColorScheme;
 }
 
-let cachedPalette: M3ThemePalette | null = null;
+const PALETTE_STORAGE_KEY = 'm3e-palette';
+const FAVICON_STORAGE_KEY = 'm3e-favicon';
+const LEGACY_STORAGE_KEYS = ['dynamic-m3-css', 'dynamic-m3-favicon'];
 
-// Built-in fallback ARGB source color for Stanislav's avatar in case of network/offline issues
-const FALLBACK_SOURCE_COLOR = 0xff9d7a39; // Warm golden/amber tone
+// Seed color sampled from the GitHub avatar; used offline / when the image can't be read.
+const FALLBACK_SOURCE_COLOR = 0xff2b4c66;
 
-/**
- * Builds the comprehensive M3ThemePalette from an ARGB source color
- */
-function buildPaletteFromSource(sourceArgb: number): M3ThemePalette {
-	const theme = themeFromSourceColor(sourceArgb);
-	const { schemes, palettes } = theme;
+const dynamicColors = new MaterialDynamicColors();
+let cachedPalette: M3Palette | null = null;
 
+function buildScheme(source: Hct, isDark: boolean): ColorScheme {
+	const scheme = new SchemeExpressive(source, isDark, 0, '2025');
+	const result = {} as ColorScheme;
+	for (const role of COLOR_ROLES) {
+		result[role] = hexFromArgb(dynamicColors[role]().getArgb(scheme));
+	}
+	return result;
+}
+
+export function buildPalette(sourceArgb: number): M3Palette {
+	const source = Hct.fromInt(sourceArgb);
 	return {
-		theme,
 		sourceColor: hexFromArgb(sourceArgb),
-		light: {
-			background: hexFromArgb(schemes.light.background),
-			bgSubtle: hexFromArgb(palettes.neutral.tone(94)),
-			surface: hexFromArgb(schemes.light.surface),
-			surfaceContainerLow: hexFromArgb(palettes.neutral.tone(96)),
-			surfaceContainer: hexFromArgb(palettes.neutral.tone(92)),
-			surfaceContainerHigh: hexFromArgb(palettes.neutral.tone(88)),
-			surfaceContainerHighest: hexFromArgb(palettes.neutral.tone(84)),
-			textPrimary: hexFromArgb(schemes.light.onSurface),
-			textSecondary: hexFromArgb(schemes.light.onSurfaceVariant),
-			textTertiary: hexFromArgb(schemes.light.outline),
-			accent: hexFromArgb(schemes.light.primary),
-			accentHover: hexFromArgb(palettes.primary.tone(35)),
-			accentContainer: hexFromArgb(schemes.light.primaryContainer),
-			onAccentContainer: hexFromArgb(schemes.light.onPrimaryContainer),
-			accentOpacity: `${hexFromArgb(schemes.light.primary)}20`,
-			elevationOne: hexFromArgb(palettes.neutral.tone(92)),
-			elevationTwo: hexFromArgb(palettes.neutral.tone(88)),
-			elevationThree: hexFromArgb(palettes.neutral.tone(84)),
-			elevationBorder: `${hexFromArgb(schemes.light.outlineVariant)}45`,
-			badgeBg: hexFromArgb(palettes.neutral.tone(88)),
-			badgeText: hexFromArgb(schemes.light.onSurfaceVariant)
-		},
-		dark: {
-			background: hexFromArgb(schemes.dark.background),
-			bgSubtle: hexFromArgb(palettes.neutral.tone(8)),
-			surface: hexFromArgb(schemes.dark.surface),
-			surfaceContainerLow: hexFromArgb(palettes.neutral.tone(10)),
-			surfaceContainer: hexFromArgb(palettes.neutral.tone(14)),
-			surfaceContainerHigh: hexFromArgb(palettes.neutral.tone(18)),
-			surfaceContainerHighest: hexFromArgb(palettes.neutral.tone(22)),
-			textPrimary: hexFromArgb(schemes.dark.onSurface),
-			textSecondary: hexFromArgb(schemes.dark.onSurfaceVariant),
-			textTertiary: hexFromArgb(schemes.dark.outline),
-			accent: hexFromArgb(schemes.dark.primary),
-			accentHover: hexFromArgb(palettes.primary.tone(85)),
-			accentContainer: hexFromArgb(schemes.dark.primaryContainer),
-			onAccentContainer: hexFromArgb(schemes.dark.onPrimaryContainer),
-			accentOpacity: `${hexFromArgb(schemes.dark.primary)}26`,
-			elevationOne: hexFromArgb(palettes.neutral.tone(10)),
-			elevationTwo: hexFromArgb(palettes.neutral.tone(14)),
-			elevationThree: hexFromArgb(palettes.neutral.tone(22)),
-			elevationBorder: `${hexFromArgb(schemes.dark.outlineVariant)}40`,
-			badgeBg: hexFromArgb(palettes.neutral.tone(18)),
-			badgeText: hexFromArgb(schemes.dark.onSurfaceVariant)
-		}
+		light: buildScheme(source, false),
+		dark: buildScheme(source, true)
 	};
 }
 
-/**
- * Extracts dominant Monet color from an image URL using a fast, non-blocking 128x128 canvas
- */
-export async function extractColorFromImage(imageUrl: string): Promise<M3ThemePalette> {
-	if (typeof window === 'undefined') {
-		return buildPaletteFromSource(FALLBACK_SOURCE_COLOR);
-	}
+const toKebab = (role: string) => role.replace(/[A-Z]/g, (c) => `-${c.toLowerCase()}`);
 
+/** `html:root` outranks the static fallback tokens in app.css regardless of stylesheet order. */
+export function paletteToCss(palette: M3Palette): string {
+	const tokens = COLOR_ROLES.map(
+		(role) =>
+			`--md-sys-color-${toKebab(role)}:light-dark(${palette.light[role]},${palette.dark[role]});`
+	).join('');
+	return `html:root{${tokens}}`;
+}
+
+/** Samples the dominant (Monet) source color of an image and builds the full palette. */
+export async function extractColorFromImage(imageUrl: string): Promise<M3Palette> {
+	if (typeof window === 'undefined') return buildPalette(FALLBACK_SOURCE_COLOR);
+
+	let sourceArgb = FALLBACK_SOURCE_COLOR;
 	try {
-		// Method 1: Fetch as blob with CORS mode (safest against canvas tainting)
-		const sourceArgb = await extractViaFetch(imageUrl);
-		const palette = buildPaletteFromSource(sourceArgb);
-		cachedPalette = palette;
-		return palette;
-	} catch (e1) {
-		console.debug('Fetch-based color extraction failed, trying Image element fallback:', e1);
+		sourceArgb = await extractViaFetch(imageUrl);
+	} catch (fetchError) {
+		console.debug('Fetch-based color extraction failed, trying <img> fallback:', fetchError);
 		try {
-			// Method 2: Standard Image element fallback
-			const sourceArgb = await extractViaImageElement(imageUrl);
-			const palette = buildPaletteFromSource(sourceArgb);
-			cachedPalette = palette;
-			return palette;
-		} catch (e2) {
-			console.debug('Image element extraction failed, using avatar fallback:', e2);
-			// Method 3: Deterministic fallback from avatar key colors
-			const palette = buildPaletteFromSource(FALLBACK_SOURCE_COLOR);
-			cachedPalette = palette;
-			return palette;
+			sourceArgb = await extractViaImageElement(imageUrl);
+		} catch (imageError) {
+			console.debug('Image element extraction failed, using fallback seed:', imageError);
 		}
 	}
+
+	cachedPalette = buildPalette(sourceArgb);
+	return cachedPalette;
 }
 
 async function extractViaFetch(imageUrl: string): Promise<number> {
 	const response = await fetch(imageUrl, { mode: 'cors' });
 	if (!response.ok) throw new Error(`HTTP ${response.status}`);
-	const blob = await response.blob();
-
-	let imageSource: ImageBitmap | HTMLImageElement;
-	if (typeof createImageBitmap === 'function') {
-		imageSource = await createImageBitmap(blob);
-	} else {
-		imageSource = await new Promise<HTMLImageElement>((resolve, reject) => {
-			const img = new Image();
-			img.onload = () => resolve(img);
-			img.onerror = reject;
-			img.src = URL.createObjectURL(blob);
-		});
-	}
-
-	return extractFromDrawable(imageSource);
+	const bitmap = await createImageBitmap(await response.blob());
+	return extractFromDrawable(bitmap);
 }
 
 function extractViaImageElement(imageUrl: string): Promise<number> {
 	return new Promise((resolve, reject) => {
 		const img = new Image();
-		img.crossOrigin = 'Anonymous';
+		img.crossOrigin = 'anonymous';
 		img.onload = () => {
 			try {
 				resolve(extractFromDrawable(img));
@@ -192,138 +160,64 @@ function extractViaImageElement(imageUrl: string): Promise<number> {
 }
 
 function extractFromDrawable(drawable: ImageBitmap | HTMLImageElement): number {
+	const size = 128; // downscaled sample keeps quantization fast and non-blocking
 	const canvas = document.createElement('canvas');
-	const size = 128; // Scaled sample for ultra-fast, non-blocking extraction
 	canvas.width = size;
 	canvas.height = size;
 	const ctx = canvas.getContext('2d');
 	if (!ctx) throw new Error('Cannot get 2d canvas context');
 
 	ctx.drawImage(drawable, 0, 0, size, size);
-	const imageData = ctx.getImageData(0, 0, size, size);
-	return sourceColorFromImageBytes(imageData.data);
+	return sourceColorFromImageBytes(ctx.getImageData(0, 0, size, size).data);
 }
 
-export function updateDynamicFavicon(palette?: M3ThemePalette, isDark?: boolean) {
+/** Favicon: the logo on an M3 Expressive "cookie" shape, tinted with the current palette. */
+export function updateDynamicFavicon(palette?: M3Palette, isDark?: boolean) {
 	if (typeof document === 'undefined') return;
 
-	if (palette) {
-		cachedPalette = palette;
-	}
-	const activePalette = palette || cachedPalette;
-	if (!activePalette) return;
+	if (palette) cachedPalette = palette;
+	const active = cachedPalette;
+	if (!active) return;
 
-	const dark =
-		typeof isDark === 'boolean'
-			? isDark
-			: document.documentElement.getAttribute('data-theme') === 'dark' ||
-				(!document.documentElement.getAttribute('data-theme') &&
-					window.matchMedia('(prefers-color-scheme: dark)').matches);
+	const dark = isDark ?? document.documentElement.dataset.theme === 'dark';
+	const colors = dark ? active.dark : active.light;
 
-	const colors = dark ? activePalette.dark : activePalette.light;
-	const bgColor = colors.surfaceContainer;
-	const glyphColor = colors.accent;
+	const svg = `<svg width="128" height="128" viewBox="0 0 128 128" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="${shapePath('cookie9', 0, 128)}" fill="${colors.primaryContainer}"/><g transform="translate(64 64) scale(0.86) translate(-64 -64)" fill="${colors.onPrimaryContainer}"><path d="${FAVICON_PATHS.primary}"/><path d="${FAVICON_PATHS.secondary}"/></g></svg>`;
+	const dataUri = `data:image/svg+xml;utf8,${encodeURIComponent(svg)}`;
 
-	const svgString = `<svg width="128" height="128" viewBox="0 0 128 128" fill="none" xmlns="http://www.w3.org/2000/svg"><rect width="128" height="128" rx="42" fill="${bgColor}"/><path d="${FAVICON_PATHS.primary}" fill="${glyphColor}"/><path d="${FAVICON_PATHS.secondary}" fill="${glyphColor}"/></svg>`;
-
-	let link = document.querySelector("link[rel*='icon']") as HTMLLinkElement | null;
+	let link = document.querySelector<HTMLLinkElement>("link[rel*='icon']");
 	if (!link) {
 		link = document.createElement('link');
 		link.rel = 'icon';
 		document.head.appendChild(link);
 	}
-	const dataUri = `data:image/svg+xml;utf8,${encodeURIComponent(svgString)}`;
 	link.type = 'image/svg+xml';
 	link.href = dataUri;
 
 	try {
-		localStorage.setItem('dynamic-m3-favicon', dataUri);
-	} catch (_) {}
+		localStorage.setItem(FAVICON_STORAGE_KEY, dataUri);
+	} catch {}
 }
 
-/**
- * Injects dynamic Monet CSS custom properties with maximum specificity (:root[data-theme='...'])
- * and moves the style tag to the end of <head> so it takes precedence over static styles.
- */
-export function applyDynamicM3Palette(palette: M3ThemePalette) {
+/** Injects the dynamic tokens, caches them for the pre-paint script in app.html, updates the favicon. */
+export function applyDynamicM3Palette(palette: M3Palette) {
 	if (typeof document === 'undefined') return;
 
 	cachedPalette = palette;
-	const { light, dark } = palette;
+	const css = paletteToCss(palette);
 
-	let styleEl = document.getElementById('dynamic-m3-palette') as HTMLStyleElement | null;
+	let styleEl = document.getElementById(PALETTE_STORAGE_KEY) as HTMLStyleElement | null;
 	if (!styleEl) {
 		styleEl = document.createElement('style');
-		styleEl.id = 'dynamic-m3-palette';
+		styleEl.id = PALETTE_STORAGE_KEY;
+		document.head.appendChild(styleEl);
 	}
+	styleEl.textContent = css;
 
-	const cssContent = `
-		:root[data-theme="dark"], html[data-theme="dark"] {
-			--theme: dark;
-			--bg-color: ${dark.background};
-			--bg-subtle: ${dark.bgSubtle};
-			--surface: ${dark.surface};
-			--surface-container-low: ${dark.surfaceContainerLow};
-			--surface-container: ${dark.surfaceContainer};
-			--surface-container-high: ${dark.surfaceContainerHigh};
-			--surface-container-highest: ${dark.surfaceContainerHighest};
-			
-			--text-primary: ${dark.textPrimary};
-			--text-secondary: ${dark.textSecondary};
-			--text-tertiary: ${dark.textTertiary};
-			
-			--accent: ${dark.accent};
-			--accent-hover: ${dark.accentHover};
-			--accent-container: ${dark.accentContainer};
-			--on-accent-container: ${dark.onAccentContainer};
-			--accent-opacity: ${dark.accentOpacity};
-			
-			--elevation-one: ${dark.elevationOne};
-			--elevation-two: ${dark.elevationTwo};
-			--elevation-three: ${dark.elevationThree};
-			--elevation-border: ${dark.elevationBorder};
-			--badge-bg: ${dark.badgeBg};
-			--badge-text: ${dark.badgeText};
-		}
-
-		:root[data-theme="light"], html[data-theme="light"] {
-			--theme: light;
-			--bg-color: ${light.background};
-			--bg-subtle: ${light.bgSubtle};
-			--surface: ${light.surface};
-			--surface-container-low: ${light.surfaceContainerLow};
-			--surface-container: ${light.surfaceContainer};
-			--surface-container-high: ${light.surfaceContainerHigh};
-			--surface-container-highest: ${light.surfaceContainerHighest};
-			
-			--text-primary: ${light.textPrimary};
-			--text-secondary: ${light.textSecondary};
-			--text-tertiary: ${light.textTertiary};
-			
-			--accent: ${light.accent};
-			--accent-hover: ${light.accentHover};
-			--accent-container: ${light.accentContainer};
-			--on-accent-container: ${light.onAccentContainer};
-			--accent-opacity: ${light.accentOpacity};
-			
-			--elevation-one: ${light.elevationOne};
-			--elevation-two: ${light.elevationTwo};
-			--elevation-three: ${light.elevationThree};
-			--elevation-border: ${light.elevationBorder};
-			--badge-bg: ${light.badgeBg};
-			--badge-text: ${light.badgeText};
-		}
-	`;
-
-	styleEl.textContent = cssContent;
-	// Always append to end of head to beat any preceding stylesheet links
-	document.head.appendChild(styleEl);
-
-	// Cache CSS in localStorage to prevent any color flash on future loads
 	try {
-		localStorage.setItem('dynamic-m3-css', cssContent);
-	} catch (_) {}
+		localStorage.setItem(PALETTE_STORAGE_KEY, css);
+		for (const key of LEGACY_STORAGE_KEYS) localStorage.removeItem(key);
+	} catch {}
 
-	// Automatically update dynamic favicon in browser tab & cache it
 	updateDynamicFavicon(palette);
 }

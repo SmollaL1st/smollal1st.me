@@ -1,7 +1,8 @@
 <script lang="ts">
 	import { onMount } from 'svelte';
-	import { PROFILE } from '$lib/data/profile';
-	import { createLanyardStore } from '$lib/data/lanyard.svelte';
+	import { PROFILE } from '#lib/data/profile.ts';
+	import { createLanyardStore } from '#lib/data/lanyard.svelte.ts';
+	import MorphShape from '#lib/components/MorphShape.svelte';
 
 	const lanyard = createLanyardStore(PROFILE.discordId);
 
@@ -56,74 +57,63 @@
 	let username = $derived(discordUser?.username || PROFILE.handle);
 </script>
 
-<div class="activity-card interactive-card">
+<div class="activity-card">
 	<div class="header-row">
 		<div class="avatar-status-wrapper">
-			<img src={avatarSrc} alt={displayName} class="discord-avatar" loading="lazy" />
-			<div
+			<MorphShape shape="cookie9" image={avatarSrc} alt={displayName} class="discord-avatar" />
+			<span
 				class="status-indicator"
 				style="background-color: {statusColors[status] || statusColors.offline};"
 				title="Status: {status}"
-			></div>
+			></span>
 		</div>
 
 		<div class="user-meta">
 			<div class="username-line">
 				<h3 class="display-name">@{username}</h3>
-				<span class="status-badge" class:is-online={status !== 'offline'}>
-					{status}
-				</span>
+				<span class="status-badge" class:is-online={status !== 'offline'}>{status}</span>
 			</div>
 			<div class="clock-line">
-				<svg
-					xmlns="http://www.w3.org/2000/svg"
-					width="14"
-					height="14"
-					viewBox="0 0 24 24"
-					fill="none"
-					stroke="currentColor"
-					stroke-width="2"
-					stroke-linecap="round"
-					stroke-linejoin="round"
-				>
-					<circle cx="12" cy="12" r="10" />
-					<polyline points="12 6 12 12 16 14" />
-				</svg>
-				<span class="clock-text">{currentTime || 'Local Time'} (GMT+2)</span>
+				<span class="m3-icon" aria-hidden="true">schedule</span>
+				<span>{currentTime || 'Local Time'} (GMT+2)</span>
 			</div>
 		</div>
 	</div>
 
-	{#if customActivity}
-		<!-- Custom Presence / Activity -->
-		<div class="custom-activity-box">
-			<span class="activity-type">Activity</span>
-			<p class="activity-details">
-				{customActivity.details || customActivity.state || customActivity.name}
-			</p>
-		</div>
-	{:else}
-		<!-- Fallback Activity Status -->
-		<div class="default-status-box">
-			<span class="pulse-dot"></span>
-			<p class="default-status-text">Available in Steam</p>
-		</div>
-	{/if}
+	<div class="activity-box">
+		<span class="activity-icon" aria-hidden="true">
+			<MorphShape shape="cookie6" />
+			<span class="m3-icon">sports_esports</span>
+		</span>
+		{#if customActivity}
+			<div class="activity-text">
+				<span class="activity-type">Activity</span>
+				<p class="activity-details">
+					{customActivity.details || customActivity.state || customActivity.name}
+				</p>
+			</div>
+		{:else}
+			<div class="activity-text">
+				<span class="activity-type">Status</span>
+				<p class="activity-details">Available in Steam</p>
+			</div>
+		{/if}
+	</div>
 </div>
 
 <style>
 	.activity-card {
-		background-color: var(--surface-container);
-		border-radius: var(--radius-lg);
-		padding: 24px;
 		display: flex;
 		flex-direction: column;
-		gap: 18px;
-		box-shadow: none;
-		transition:
-			transform 0.25s var(--bezier-bounce),
-			background-color 0.3s ease,
-			border-color 0.25s ease;
+		gap: 20px;
+		padding: 24px;
+		border-radius: var(--md-sys-shape-corner-extra-large-increased);
+		background-color: var(--md-sys-color-surface-container);
+		transition: border-radius var(--m3-default-spatial);
+	}
+
+	.activity-card:hover {
+		border-radius: var(--md-sys-shape-corner-extra-extra-large);
 	}
 
 	.header-row {
@@ -135,111 +125,137 @@
 	.avatar-status-wrapper {
 		position: relative;
 		flex-shrink: 0;
+		width: 64px;
+		height: 64px;
 	}
 
-	.discord-avatar {
-		width: 58px;
-		height: 58px;
-		border-radius: var(--radius-md);
-		object-fit: cover;
-		background-color: var(--surface-container-highest);
+	.avatar-status-wrapper :global(.discord-avatar) {
+		width: 100%;
+		height: 100%;
 	}
 
 	.status-indicator {
 		position: absolute;
-		bottom: -2px;
-		right: -2px;
-		width: 16px;
-		height: 16px;
+		right: 0;
+		bottom: 0;
+		width: 18px;
+		height: 18px;
 		border-radius: 50%;
-		border: 3px solid var(--surface-container);
+		border: 3px solid var(--md-sys-color-surface-container);
 	}
 
 	.user-meta {
 		display: flex;
 		flex-direction: column;
-		gap: 4px;
+		gap: 6px;
+		min-width: 0;
 	}
 
 	.username-line {
 		display: flex;
+		flex-wrap: wrap;
 		align-items: center;
 		gap: 8px;
 	}
 
 	.display-name {
-		font-size: 1.15rem;
-		font-weight: 600;
-		color: var(--text-primary);
-		letter-spacing: -0.02em;
+		font: var(--md-sys-typescale-emphasized-title-large);
+		letter-spacing: -0.01em;
 	}
 
 	.status-badge {
-		font-family: var(--font-mono);
-		font-size: 0.75rem;
+		display: inline-flex;
+		align-items: center;
+		height: 24px;
+		padding-inline: 10px;
+		border-radius: var(--md-sys-shape-corner-small);
+		background-color: var(--md-sys-color-surface-container-highest);
+		color: var(--md-sys-color-on-surface-variant);
+		font: var(--md-sys-typescale-label-medium);
 		text-transform: uppercase;
-		letter-spacing: 0.05em;
-		padding: 2px 8px;
-		border-radius: var(--radius-pill);
-		background-color: var(--surface-container-highest);
-		color: var(--text-tertiary);
+		letter-spacing: 0.06em;
 	}
 
 	.status-badge.is-online {
-		background-color: var(--accent-container);
-		color: var(--on-accent-container);
-		font-weight: 600;
+		background-color: var(--md-sys-color-primary-container);
+		color: var(--md-sys-color-on-primary-container);
+		font-weight: 700;
 	}
 
 	.clock-line {
 		display: flex;
 		align-items: center;
 		gap: 6px;
-		color: var(--text-secondary);
-		font-family: var(--font-mono);
+		color: var(--md-sys-color-on-surface-variant);
+		font-family: var(--md-ref-typeface-code);
 		font-size: 0.8125rem;
 	}
 
-	/* Custom Activity & Fallback */
-	.custom-activity-box,
-	.default-status-box {
-		padding: 12px 14px;
-		border-radius: var(--radius-md);
-		background-color: var(--surface-container-low);
-		border: 1px solid var(--elevation-border);
+	.clock-line .m3-icon {
+		--icon-size: 18px;
+	}
+
+	.activity-box {
 		display: flex;
 		align-items: center;
-		gap: 10px;
+		gap: 14px;
+		padding: 12px 16px 12px 12px;
+		border-radius: var(--md-sys-shape-corner-large-increased);
+		background-color: var(--md-sys-color-surface-container-high);
+	}
+
+	.activity-icon {
+		display: grid;
+		place-items: center;
+		flex-shrink: 0;
+		width: 44px;
+		height: 44px;
+		color: var(--md-sys-color-tertiary-container);
+		transition: transform var(--m3-default-spatial);
+	}
+
+	.activity-box:hover .activity-icon {
+		transform: rotate(60deg);
+	}
+
+	.activity-icon > :global(*) {
+		grid-area: 1 / 1;
+		width: 100%;
+		height: 100%;
+	}
+
+	.activity-icon .m3-icon {
+		--icon-fill: 1;
+		--icon-size: 22px;
+		width: 22px;
+		height: 22px;
+		color: var(--md-sys-color-on-tertiary-container);
+		transition: transform var(--m3-default-spatial);
+	}
+
+	.activity-box:hover .activity-icon .m3-icon {
+		transform: rotate(-60deg);
+	}
+
+	.activity-text {
+		display: flex;
+		flex-direction: column;
+		gap: 2px;
+		min-width: 0;
 	}
 
 	.activity-type {
-		font-family: var(--font-mono);
-		font-size: 0.75rem;
-		font-weight: 600;
-		padding: 2px 6px;
-		border-radius: 6px;
-		background: var(--accent-container);
-		color: var(--on-accent-container);
+		color: var(--md-sys-color-tertiary);
+		font: var(--md-sys-typescale-label-medium);
+		text-transform: uppercase;
+		letter-spacing: 0.08em;
 	}
 
 	.activity-details {
-		font-size: 0.875rem;
-		color: var(--text-secondary);
-		white-space: nowrap;
 		overflow: hidden;
+		color: var(--md-sys-color-on-surface);
+		font: var(--md-sys-typescale-body-medium);
+		white-space: nowrap;
 		text-overflow: ellipsis;
-	}
-
-	.pulse-dot {
-		width: 8px;
-		height: 8px;
-		border-radius: 50%;
-		background-color: var(--accent);
-		flex-shrink: 0;
-	}
-
-	.default-status-text {
-		font-size: 0.875rem;
-		color: var(--text-secondary);
 	}
 </style>

@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { LOGO_VIEWBOX, LOGO_PATHS } from '$lib/data/logo';
+	import { LOGO_VIEWBOX, LOGO_PATHS } from '#lib/data/logo.ts';
 
 	interface Props {
 		width?: number | string;
@@ -53,7 +53,7 @@
 
 	.logo-svg.is-animated path {
 		fill: rgba(0, 0, 0, 0);
-		stroke: var(--accent);
+		stroke: currentColor;
 		stroke-width: 2.5;
 		stroke-dasharray: 100;
 		stroke-dashoffset: 100;
@@ -77,7 +77,7 @@
 			stroke-width: 2.5;
 		}
 		100% {
-			fill: var(--accent);
+			fill: currentColor;
 			stroke-width: 0;
 		}
 	}

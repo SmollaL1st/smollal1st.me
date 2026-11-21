@@ -1,40 +1,55 @@
 <script lang="ts">
 	import { onMount } from 'svelte';
-	import { PROFILE, SOCIAL_LINKS } from '$lib/data/profile';
-	import { HERO_RADIAL_PATTERN } from '$lib/data/heroPattern';
-	import { extractColorFromImage, applyDynamicM3Palette } from '$lib/utils/colorExtractor';
-	import TechIcon from '$lib/components/TechIcon.svelte';
-	import Logo from '$lib/components/Logo.svelte';
+	import { PROFILE, SOCIAL_LINKS } from '#lib/data/profile.ts';
+	import { HERO_RADIAL_PATTERN } from '#lib/data/heroPattern.ts';
+	import { extractColorFromImage, applyDynamicM3Palette } from '#lib/utils/colorExtractor.ts';
+	import type { ShapeName } from '#lib/utils/shapes.ts';
+	import TechIcon from '#lib/components/TechIcon.svelte';
+	import Logo from '#lib/components/Logo.svelte';
+	import MorphShape from '#lib/components/MorphShape.svelte';
 
-	// 3D Avatar Tilt State
+	interface Props {
+		/** Becomes true when the splash screen starts fading — triggers the entrance animation. */
+		revealed?: boolean;
+	}
+
+	let { revealed = false }: Props = $props();
+
+	// 3D tilt
 	let tiltX = $state(0);
 	let tiltY = $state(0);
 	let isHovered = $state(false);
+
+	// Tap the avatar to morph it through the M3 Expressive shape set
+	const AVATAR_SHAPES: ShapeName[] = [
+		'cookie9',
+		'clover4',
+		'sunny',
+		'pentagon',
+		'cookie6',
+		'softBurst',
+		'square',
+		'flower'
+	];
+	let shapeIndex = $state(0);
+	let avatarRotation = $state(0);
+	const avatarShape = $derived(AVATAR_SHAPES[shapeIndex]);
 
 	onMount(async () => {
 		try {
 			const palette = await extractColorFromImage(PROFILE.avatarUrl);
 			applyDynamicM3Palette(palette);
 		} catch (e) {
-			console.error('Dynamic Monet palette generation error:', e);
+			console.error('Dynamic M3 palette generation error:', e);
 		}
 	});
 
 	function handleMouseMove(e: MouseEvent) {
-		const card = e.currentTarget as HTMLElement;
-		const rect = card.getBoundingClientRect();
-		const x = e.clientX - rect.left;
-		const y = e.clientY - rect.top;
-
+		const rect = (e.currentTarget as HTMLElement).getBoundingClientRect();
 		const centerX = rect.width / 2;
 		const centerY = rect.height / 2;
-
-		tiltX = -((y - centerY) / centerY) * 10;
-		tiltY = ((x - centerX) / centerX) * 10;
-	}
-
-	function handleMouseEnter() {
-		isHovered = true;
+		tiltX = -((e.clientY - rect.top - centerY) / centerY) * 10;
+		tiltY = ((e.clientX - rect.left - centerX) / centerX) * 10;
 	}
 
 	function handleMouseLeave() {
@@ -43,9 +58,13 @@
 		tiltY = 0;
 	}
 
-	function scrollToAbout() {
-		const el = document.getElementById('projects');
-		if (el) el.scrollIntoView({ behavior: 'smooth' });
+	function morphAvatar() {
+		shapeIndex = (shapeIndex + 1) % AVATAR_SHAPES.length;
+		avatarRotation += 45;
+	}
+
+	function scrollToProjects() {
+		document.getElementById('projects')?.scrollIntoView({ behavior: 'smooth' });
 	}
 
 	// Title letters with custom kinetic styles
@@ -64,271 +83,271 @@
 	];
 </script>
 
-<section id="home" class="hero-section wrapper">
+<section id="home" class="hero-section wrapper" class:revealed>
 	<div class="hero-content">
-		<!-- Kinetic Typography Heading -->
 		<h1 class="hero-title" aria-label={PROFILE.name}>
 			{#each titleLetters as item, i}
 				{#if item.char === ' '}
 					<span class="hero-space" aria-hidden="true">&nbsp;</span>
 				{:else}
-					<span class="hero-char" class:special={item.isSpecial} style="--char-index: {i}">
+					<span
+						class="hero-char"
+						class:special={item.isSpecial}
+						style="--char-index: {i}"
+						aria-hidden="true"
+					>
 						{item.char}
 					</span>
 				{/if}
 			{/each}
 		</h1>
 
-		<!-- Social Links Row -->
-		<div class="socials-row">
+		<!-- M3 Expressive standard button group: the pressed button widens -->
+		<div class="m3-btn-group socials">
 			{#each SOCIAL_LINKS as link}
 				<a
 					href={link.url}
 					target="_blank"
 					rel="external noopener noreferrer"
-					class="social-btn"
+					class="m3-icon-btn m social-btn"
 					title={link.name}
 					aria-label={link.name}
 				>
-					<TechIcon name={link.icon} size={20} />
+					<TechIcon name={link.icon} size={22} />
 				</a>
 			{/each}
 		</div>
 
-		<!-- Expressive M3E CTA Button with Dynamic Shape Morphing -->
-		<button type="button" class="cta-button" onclick={scrollToAbout}>
+		<button type="button" class="m3-btn filled m cta-button" onclick={scrollToProjects}>
 			<span>Explore my work</span>
-			<span class="cta-arrow" aria-hidden="true">↓</span>
+			<span class="m3-icon cta-icon" aria-hidden="true">arrow_downward</span>
 		</button>
 	</div>
 
-	<!-- Square Squircle Avatar with Authentic Telegram Radial Logos Pattern -->
-	<div class="hero-avatar-wrapper">
+	<div class="hero-visual">
 		<div
-			class="tilt-card-container"
+			class="tilt-stage"
 			role="presentation"
 			onmousemove={handleMouseMove}
-			onmouseenter={handleMouseEnter}
+			onmouseenter={() => (isHovered = true)}
 			onmouseleave={handleMouseLeave}
 		>
-			<!-- Circular Radial Pattern Grid -->
+			<!-- Radial logo pattern -->
 			<div
-				class="patern-logo-grid"
-				style="
-					transform: perspective(900px) rotateX({tiltX * 0.35}deg) rotateY({tiltY * 0.35}deg);
-				"
+				class="pattern-grid"
+				style="transform: perspective(900px) rotateX({tiltX * 0.35}deg) rotateY({tiltY * 0.35}deg);"
 			>
 				{#each HERO_RADIAL_PATTERN as item}
 					<div
 						class="pattern-item"
-						style="
-							--px: {item.x}px;
-							--py: {item.y}px;
-							--p-opacity: {item.opacity};
-							--p-size: {item.size}px;
-							--anim-delay: {item.animDelay}s;
-						"
+						style="--px: {item.x}px; --py: {item.y}px; --p-opacity: {item.opacity}; --p-size: {item.size}px; --anim-delay: {item.animDelay}s;"
 					>
 						<Logo variant="fill" class="pattern-svg" />
 					</div>
 				{/each}
 			</div>
 
-			<!-- Square 1:1 Avatar Card (Flat, No Shadows) -->
+			<!-- Slowly spinning backdrop shape -->
 			<div
-				class="tilt-card"
-				style="
-					transform: perspective(900px) rotateX({tiltX}deg) rotateY({tiltY}deg) scale3d({isHovered
-					? 1.02
-					: 1}, {isHovered ? 1.02 : 1}, 1);
-				"
+				class="avatar-backdrop"
+				style="transform: perspective(900px) rotateX({tiltX * 0.6}deg) rotateY({tiltY * 0.6}deg);"
 			>
-				<img
-					src={PROFILE.avatarUrl}
-					alt={PROFILE.name}
-					class="avatar-image"
-					loading="eager"
-					crossorigin="anonymous"
-				/>
+				<MorphShape shape="softBurst" spin={6} />
 			</div>
+
+			<!-- Avatar clipped into a morphing M3 shape -->
+			<button
+				type="button"
+				class="avatar-button"
+				onclick={morphAvatar}
+				aria-label="Morph avatar shape"
+				style="transform: perspective(900px) rotateX({tiltX}deg) rotateY({tiltY}deg) scale({isHovered
+					? 1.03
+					: 1});"
+			>
+				<MorphShape
+					shape={avatarShape}
+					rotation={avatarRotation + (isHovered ? 12 : 0)}
+					image={PROFILE.avatarUrl}
+					alt={PROFILE.name}
+					frame={4}
+				/>
+			</button>
 		</div>
 	</div>
 </section>
 
 <style>
 	.hero-section {
-		min-height: 88vh;
-		display: grid;
-		grid-template-columns: 1.2fr 0.8fr;
-		align-items: center;
-		gap: 50px;
-		padding-top: 100px;
-		padding-bottom: 60px;
 		position: relative;
+		display: grid;
+		grid-template-columns: 1.15fr 0.85fr;
+		align-items: center;
+		gap: 48px;
+		min-height: 90vh;
+		padding-block: 112px 64px;
 	}
 
 	.hero-content {
+		z-index: 2;
 		display: flex;
 		flex-direction: column;
-		gap: 20px;
-		z-index: 2;
+		align-items: flex-start;
+		gap: 28px;
 	}
 
-	/* Kinetic Typography Heading */
+	/* ---------- Kinetic display type (Google Sans Flex variable axes) ---------- */
+
 	.hero-title {
 		display: flex;
 		flex-wrap: wrap;
 		align-items: baseline;
-		gap: 2px;
-		font-size: clamp(3.2rem, 8vw, 6.2rem);
-		font-weight: 700;
-		letter-spacing: -0.07em;
+		font-family: var(--md-ref-typeface-brand);
+		font-size: clamp(3.5rem, 9vw, 7.25rem);
+		font-weight: 650;
 		line-height: 0.95;
-		color: var(--text-primary);
-		user-select: none;
+		letter-spacing: -0.035em;
+		color: var(--md-sys-color-on-surface);
 	}
 
 	.hero-char {
+		--wght: 650;
+		--wdth: 100;
+		--rond: 20;
+		--slnt: 0;
 		display: inline-block;
+		transform-origin: 50% 90%;
+		font-variation-settings:
+			'wght' var(--wght),
+			'wdth' var(--wdth),
+			'ROND' var(--rond),
+			'slnt' var(--slnt),
+			'opsz' 144;
 		transition:
-			transform 0.35s var(--bezier-bounce),
-			color 0.3s ease;
-		transform-origin: bottom center;
+			transform var(--m3-fast-spatial),
+			color var(--m3-default-effects),
+			font-variation-settings var(--m3-default-spatial);
+	}
+
+	.hero-char.special {
+		--wght: 800;
+		--rond: 100;
+		--slnt: -10;
+		color: var(--md-sys-color-primary);
+	}
+
+	.hero-char:hover {
+		--wght: 950;
+		--wdth: 125;
+		--rond: 100;
+		transform: translateY(-0.08em) rotate(-3deg);
+		color: var(--md-sys-color-tertiary);
 	}
 
 	.hero-space {
 		display: inline-block;
-		width: 0.28em;
+		width: 0.26em;
 	}
 
-	.hero-char:hover {
-		transform: translateY(-8px) scale(1.15) rotate(2deg);
-		color: var(--accent);
+	/* Entrance: letters spring up while their weight & width "inflate" */
+	.revealed .hero-char {
+		animation: char-rise 900ms var(--md-sys-motion-spring-fast-spatial) backwards;
+		animation-delay: calc(var(--char-index) * 45ms);
 	}
 
-	.hero-char.special {
-		font-style: italic;
-		color: var(--accent);
+	@keyframes char-rise {
+		from {
+			opacity: 0;
+			transform: translateY(0.45em) scale(0.7);
+			font-variation-settings:
+				'wght' 100,
+				'wdth' 50,
+				'ROND' 100,
+				'slnt' 0,
+				'opsz' 144;
+		}
 	}
 
-	.hero-char.special:hover {
-		transform: translateY(-10px) scale(1.22) rotate(-4deg);
+	.revealed .socials,
+	.revealed .cta-button {
+		animation: fade-up 700ms var(--md-sys-motion-spring-default-spatial) backwards;
+		animation-delay: 420ms;
 	}
 
-	/* Socials Row */
-	.socials-row {
-		display: flex;
-		flex-wrap: wrap;
-		align-items: center;
-		gap: 12px;
-		margin-top: 6px;
+	.revealed .cta-button {
+		animation-delay: 520ms;
 	}
+
+	@keyframes fade-up {
+		from {
+			opacity: 0;
+			translate: 0 24px;
+		}
+	}
+
+	/* ---------- Socials & CTA ---------- */
 
 	.social-btn {
-		display: flex;
-		align-items: center;
-		justify-content: center;
-		width: 46px;
-		height: 46px;
-		border-radius: var(--radius-md);
-		background-color: var(--surface-container);
-		color: var(--text-primary);
-		box-shadow: none;
-		transition:
-			transform 0.25s var(--bezier-bounce),
-			background-color 0.2s ease,
-			border-color 0.2s ease,
-			color 0.2s ease;
+		--_bg: var(--md-sys-color-surface-container-high);
+		--_fg: var(--md-sys-color-on-surface);
 	}
 
 	.social-btn:hover {
-		transform: translateY(-3px) scale(1.06);
-		background-color: var(--accent-container);
-		color: var(--on-accent-container);
-		border-color: var(--accent);
+		--_bg: var(--md-sys-color-tertiary-container);
+		--_fg: var(--md-sys-color-on-tertiary-container);
+		border-radius: var(--_square);
 	}
 
-	/* Expressive M3E CTA Button with Dynamic Shape-Morphing */
+	.social-btn:active {
+		border-radius: var(--_pressed);
+	}
+
 	.cta-button {
-		display: inline-flex;
-		align-items: center;
-		justify-content: center;
-		gap: 10px;
-		margin-top: 16px;
-		width: fit-content;
-		padding: 16px 32px;
-		border-radius: 16px;
-		border: none;
-		outline: none;
-		background-color: var(--surface-container-high);
-		color: var(--text-primary);
-		font-family: var(--font-sans);
-		font-size: 1.125rem;
-		font-weight: 600;
-		letter-spacing: -0.01em;
-		cursor: pointer;
-		box-shadow: none;
-		position: relative;
-		user-select: none;
-		-webkit-tap-highlight-color: transparent;
-		transition:
-			border-radius 0.35s var(--bezier-bounce),
-			transform 0.25s var(--bezier-bounce),
-			background-color 0.25s ease,
-			color 0.2s ease;
+		padding-inline: 28px 24px;
 	}
 
-	.cta-arrow {
-		display: inline-block;
-		font-size: 1.15rem;
-		line-height: 1;
-		transition: transform 0.25s var(--bezier-bounce);
+	.cta-icon {
+		transition: transform var(--m3-fast-spatial);
 	}
 
 	.cta-button:hover {
-		border-radius: 26px 14px 26px 14px;
-		transform: translateY(-3px);
-		background-color: var(--accent-container);
-		color: var(--on-accent-container);
+		border-radius: var(--_square);
 	}
 
-	.cta-button:hover .cta-arrow {
+	.cta-button:hover .cta-icon {
 		transform: translateY(3px);
 	}
 
 	.cta-button:active {
-		border-radius: 24px;
-		transform: translateY(0) scale(0.97);
-		background-color: var(--accent-container);
+		border-radius: var(--_pressed);
 	}
 
-	/* Square Avatar with Radial Circular LogoV2 Pattern */
-	.hero-avatar-wrapper {
-		display: flex;
-		justify-content: center;
-		align-items: center;
-		position: relative;
-		padding: 40px 0;
-	}
+	/* ---------- Avatar stage ---------- */
 
-	.tilt-card-container {
-		perspective: 900px;
-		cursor: grab;
-		position: relative;
+	.hero-visual {
 		display: flex;
 		align-items: center;
 		justify-content: center;
+		padding-block: 40px;
 	}
 
-	/* Circular Radial Pattern Grid */
-	.patern-logo-grid {
+	.tilt-stage {
+		--avatar-size: 340px;
+		position: relative;
+		display: grid;
+		place-items: center;
+		width: var(--avatar-size);
+		height: var(--avatar-size);
+	}
+
+	.pattern-grid {
 		position: absolute;
 		top: 50%;
 		left: 50%;
 		width: 0;
 		height: 0;
+		z-index: 0;
 		pointer-events: none;
-		z-index: 1;
 		transition: transform 0.2s ease-out;
 	}
 
@@ -338,73 +357,85 @@
 		left: 0;
 		width: var(--p-size, 36px);
 		height: calc(var(--p-size, 36px) * (374 / 295));
-		color: var(--accent);
+		color: var(--md-sys-color-primary);
 		opacity: var(--p-opacity);
 		transform: translate(calc(-50% + var(--px)), calc(-50% + var(--py))) rotate(-18deg);
-		animation: logoGentleFloat 4.5s ease-in-out infinite;
+		animation: logo-float 4.5s ease-in-out infinite;
 		animation-delay: var(--anim-delay, 0s);
-		transition:
-			color 0.3s ease,
-			opacity 0.3s ease;
+		transition: color var(--m3-slow-effects);
 	}
 
 	:global(.pattern-svg) {
+		display: block;
 		width: 100%;
 		height: 100%;
-		display: block;
 	}
 
-	@keyframes logoGentleFloat {
+	@keyframes logo-float {
 		0%,
 		100% {
-			translate: 0 0px;
+			translate: 0 0;
 		}
 		50% {
 			translate: 0 -4px;
 		}
 	}
 
-	/* Square 1:1 Tilt Card */
-	.tilt-card {
-		position: relative;
-		width: 320px;
-		height: 320px;
-		aspect-ratio: 1 / 1;
-		border-radius: 90px;
-		overflow: hidden;
-		background-color: var(--surface-container);
-		box-shadow: none;
-		z-index: 2;
-		transition: transform 0.15s ease-out;
-		transform-style: preserve-3d;
+	.avatar-backdrop {
+		position: absolute;
+		inset: -13%;
+		z-index: 1;
+		color: var(--md-sys-color-surface-container-high);
+		pointer-events: none;
+		transition:
+			transform 0.2s ease-out,
+			color var(--m3-slow-effects);
 	}
 
-	.avatar-image {
+	.avatar-button {
+		position: relative;
+		z-index: 2;
 		width: 100%;
 		height: 100%;
-		object-fit: cover;
-		display: block;
-		filter: contrast(1.02) saturate(1.04);
+		padding: 0;
+		border: none;
+		background: none;
+		color: var(--md-sys-color-primary);
+		cursor: pointer;
+		transform-style: preserve-3d;
+		transition: transform 0.15s ease-out;
+	}
+
+	.avatar-button :global(svg) {
+		width: 100%;
+		height: 100%;
+		filter: drop-shadow(0 12px 32px rgb(0 0 0 / 0.18));
+	}
+
+	.avatar-button:focus-visible {
+		outline: none;
+	}
+
+	.avatar-button:focus-visible :global(svg) {
+		filter: drop-shadow(0 0 0 var(--md-sys-color-secondary))
+			drop-shadow(0 0 4px var(--md-sys-color-secondary));
 	}
 
 	@media (max-width: 868px) {
 		.hero-section {
 			grid-template-columns: 1fr;
-			padding-top: 60px;
-			gap: 40px;
-			text-align: left;
+			gap: 32px;
+			min-height: auto;
+			padding-block: 48px 40px;
 		}
 
-		.hero-avatar-wrapper {
+		.hero-visual {
 			order: -1;
-			justify-content: center;
-			padding: 25px 0;
+			padding-block: 32px 8px;
 		}
 
-		.tilt-card {
-			width: 250px;
-			height: 250px;
-			border-radius: 70px;
+		.tilt-stage {
+			--avatar-size: 250px;
 		}
 
 		.pattern-item {

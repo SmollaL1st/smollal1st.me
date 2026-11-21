@@ -1,4 +1,4 @@
-import type { LanyardData } from '$lib/types';
+import type { LanyardData } from '#lib/types.ts';
 
 export function createLanyardStore(userId: string) {
 	let data = $state<LanyardData | null>(null);
@@ -12,7 +12,7 @@ export function createLanyardStore(userId: string) {
 		try {
 			const res = await fetch(`https://api.lanyard.rest/v1/users/${userId}`);
 			if (res.ok) {
-				const json = await res.json();
+				const json = (await res.json()) as { success: boolean; data?: LanyardData };
 				if (json.success && json.data) {
 					data = json.data;
 					error = null;

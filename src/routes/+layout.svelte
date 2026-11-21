@@ -1,8 +1,8 @@
 <script lang="ts">
 	import '../app.css';
 	import { onMount } from 'svelte';
-	import PointerRing from '$lib/components/PointerRing.svelte';
-	import { updateDynamicFavicon } from '$lib/utils/colorExtractor';
+	import PointerRing from '#lib/components/PointerRing.svelte';
+	import { updateDynamicFavicon } from '#lib/utils/colorExtractor.ts';
 
 	let { children } = $props();
 

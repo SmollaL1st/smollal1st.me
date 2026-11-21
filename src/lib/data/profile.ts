@@ -1,4 +1,4 @@
-import type { SocialLink, Project, NavItem } from '$lib/types';
+import type { SocialLink, Project, NavItem } from '#lib/types.ts';
 
 export const PROFILE = {
 	name: 'Smo//a L!st',
@@ -13,8 +13,8 @@ export const PROFILE = {
 
 export const NAV_ITEMS: NavItem[] = [
 	{ label: '/', href: '#home', icon: 'home' },
-	{ label: 'about', href: '#about', icon: 'user' },
-	{ label: 'projects', href: '#projects', icon: 'layers' }
+	{ label: 'about', href: '#about', icon: 'person' },
+	{ label: 'projects', href: '#projects', icon: 'stacks' }
 ];
 
 export const SOCIAL_LINKS: SocialLink[] = [

@@ -3,35 +3,40 @@
 	<head>
 		<meta charset="utf-8" />
 		<link rel="icon" href="%sveltekit.assets%/favicon.svg" />
-		<meta name="viewport" content="width=device-width, initial-scale=1" />
+		<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
 
-		<!-- Google Fonts: Space Grotesk & Space Mono -->
+		<!-- Material 3 Expressive type: Google Sans Flex (all variable axes) + Google Sans Code -->
 		<link rel="preconnect" href="https://fonts.googleapis.com" />
 		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 		<link
-			href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Space+Mono:ital,wght@0,400;0,700;1,400&display=swap"
+			href="https://fonts.googleapis.com/css2?family=Google+Sans+Code:wght@300..800&family=Google+Sans+Flex:opsz,slnt,wdth,wght,GRAD,ROND@6..144,-10..0,25..151,1..1000,0..100,0..100&display=swap"
+			rel="stylesheet"
+		/>
+		<!-- Material Symbols Rounded, subset to the icons the site uses (names must stay alphabetical) -->
+		<link
+			href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200&icon_names=arrow_downward,arrow_outward,auto_awesome,code,home,inventory_2,lock,open_in_new,person,public,schedule,sports_esports,stacks&display=block"
 			rel="stylesheet"
 		/>
 
 		<link rel="me" href="https://mastodon.social/@SmollaL1st" />
 
-		<!-- Prevent theme flash & set system theme + restore dynamic M3 palette / favicon instantly before paint -->
+		<!-- Before first paint: follow the system theme and restore the cached dynamic M3 palette + favicon -->
 		<script>
 			try {
-				const isDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+				var isDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
 				document.documentElement.setAttribute('data-theme', isDark ? 'dark' : 'light');
 
-				const cachedCss = localStorage.getItem('dynamic-m3-css');
+				var cachedCss = localStorage.getItem('m3e-palette');
 				if (cachedCss) {
-					const style = document.createElement('style');
-					style.id = 'dynamic-m3-palette';
+					var style = document.createElement('style');
+					style.id = 'm3e-palette';
 					style.textContent = cachedCss;
 					document.head.appendChild(style);
 				}
 
-				const cachedFavicon = localStorage.getItem('dynamic-m3-favicon');
+				var cachedFavicon = localStorage.getItem('m3e-favicon');
 				if (cachedFavicon) {
-					const link = document.querySelector("link[rel*='icon']");
+					var link = document.querySelector("link[rel*='icon']");
 					if (link) link.href = cachedFavicon;
 				}
 			} catch (_) {}
